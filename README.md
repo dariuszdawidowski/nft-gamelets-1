@@ -1,6 +1,6 @@
-Pixelpunk NFT collection
+Pixelpunk NFT collection 
 "Gamelets #1"
 
-Authors
-Dariusz Dawidowski
+Authors 
+Dariusz Dawidowski 
 Dariusz Gozdek
