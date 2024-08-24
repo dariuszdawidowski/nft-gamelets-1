@@ -1,7 +1,7 @@
 {
     "canisters": {
  
-        "asset-canister": {
+        "assets": {
             "frontend": {
                 "entrypoint": "asset-canister/index.html"
             },
@@ -11,7 +11,7 @@
             "type": "assets"
         },
 
-        "icrc7": {
+        "minter": {
             "main": "minter-canister/main.mo",
             "type": "motoko",
             "gzip": true
