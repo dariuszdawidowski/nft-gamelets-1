@@ -1,20 +1,32 @@
 {
-  "canisters": {
-    "asset-canister": {
-      "frontend": {
-        "entrypoint": "asset-canister/index.html"
-      },
-      "source": [
-        "asset-canister"
-      ],
-      "type": "assets"
-    }
-  },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
-    }
-  },
-  "version": 1
+    "canisters": {
+ 
+        "asset-canister": {
+            "frontend": {
+                "entrypoint": "asset-canister/index.html"
+            },
+            "source": [
+                "asset-canister"
+            ],
+            "type": "assets"
+        },
+
+        "icrc7": {
+            "main": "minter-canister/main.mo",
+            "type": "motoko",
+            "gzip": true
+        }
+        
+    },
+    "defaults": {
+        "build": {
+            "args": "",
+            "packtool": "mops sources"
+        },
+        "replica": {
+            "subnet_type": "system"
+        }
+    },
+    "dfx": "0.19.0",
+    "version": 1
 }
