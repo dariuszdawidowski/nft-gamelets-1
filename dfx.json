@@ -2,10 +2,10 @@
   "canisters": {
     "asset-canister": {
       "frontend": {
-        "entrypoint": "asset-canister/assets/index.html"
+        "entrypoint": "asset-canister/index.html"
       },
       "source": [
-        "asset-canister/assets"
+        "asset-canister"
       ],
       "type": "assets"
     }
