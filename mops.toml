@@ -1,6 +1,6 @@
 [package]
 name = "nft-gamelets-1"
-version = "0.2.0"
+version = "0.3.0"
 description = "Pixelpunk NFT collection Gamelets #1"
 repository = "https://github.com/dariuszdawidowski/nft-gamelets-1"
 keywords = [ "nft" ]

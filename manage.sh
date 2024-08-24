@@ -1,18 +1,17 @@
 #!/bin/bash
 
 # Pixelpunk Gamelets #1
-# v0.2.0
+# v0.3.0
 
-# export OWNER=$(dfx identity get-principal)
-# export ASSET_CANISTER=$(dfx canister id assets)
 export MINTER_CANISTER=$(dfx canister id minter)
 
 function help () {
     echo "Usage:"
     echo "  ./manage.sh <option> [param]"
     echo "  Options:"
-    echo "  deploy <canister> [--ic] - deploy canister to a local replica or mainnet with --ic"
-    echo "  mint <nft id> <asset url> [--ic] - mint collection on a local replica or mainnet with --ic"
+    echo "  deploy <canister> [--ic] - deploy canister"
+    echo "  mint <nft id> <asset url> [--ic] - mint collection"
+    echo "  transfer <nft id> <to principal> [--ic] - transfer NFT to new owner"
 }
 
 if [ $# == 0 ]; then
@@ -66,6 +65,22 @@ if [ $1 == "mint" ]; then
 
     dfx canister call minter icrc7_total_supply --query
     
+    exit 0
+fi
+
+if [ $1 == "transfer" ]; then
+    echo "Transfering NFT id $2 from $MINTER_CANISTER to $3..."
+
+    dfx canister call minter icrc37_transfer_from "(vec{record {
+        spender = principal \"$3\";
+        from = record { owner = principal \"$MINTER_CANISTER\"; subaccount = null};
+        to = record { owner = principal \"$3\"; subaccount = null};
+        token_id = $2 : nat;
+        memo = null;
+        created_at_time = null;}})"
+
+    dfx canister call minter icrc7_owner_of "(vec {$2})" --query
+
     exit 0
 fi
 
