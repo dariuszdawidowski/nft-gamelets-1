@@ -81,12 +81,21 @@
                     <object id="100" name="obj:barbell" type="Spawn" x="52" y="80">
                         <point/>
                     </object>
-                </objectgroup>
-                <objectgroup id="6" name="Characters" locked="1">
-                    <object id="101" name="npc:character" type="Spawn" x="160" y="96">
+                    <object id="101" name="obj:dumbbells" type="Spawn" x="168" y="124">
                         <point/>
                     </object>
-                    <object id="102" name="obj:punchingbag" type="Spawn" x="120" y="100">
+                    <object id="102" name="obj:locker" type="Spawn" x="48" y="48">
+                        <point/>
+                    </object>
+                    <object id="103" name="obj:shelf" type="Spawn" x="144" y="48">
+                        <point/>
+                    </object>
+                </objectgroup>
+                <objectgroup id="6" name="Characters" locked="1">
+                    <object id="104" name="npc:character" type="Spawn" x="160" y="96">
+                        <point/>
+                    </object>
+                    <object id="105" name="obj:punchingbag" type="Spawn" x="120" y="100">
                         <point/>
                     </object>
                 </objectgroup>
@@ -133,11 +142,35 @@
                 </animation>
             </actor>
         </script>
+        <script id="dumbbells" type="text/xml">
+            <actor version="0.2" name="dumbbells" type="Dumbbells" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="8" y="8" width="16" height="16"/>
+                <animation name="idle">
+                    <frame tileid="19" duration="100"/>
+                </animation>
+            </actor>
+        </script>
         <script id="punchingbag" type="text/xml">
             <actor version="0.2" name="punchingbag" type="PunchingBag" resource="#atlas" width="320" height="320" cols="10" rows="10">
                 <collider x="-4" y="16" width="25" height="16"/>
                 <animation name="idle">
                     <frame tileid="16" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="locker" type="text/xml">
+            <actor version="0.2" name="locker" type="Locker" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="0" y="0" width="38" height="42"/>
+                <animation name="idle">
+                    <frame tileid="19" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="shelf" type="text/xml">
+            <actor version="0.2" name="shelf" type="Shelf" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="0" y="0" width="32" height="42"/>
+                <animation name="idle">
+                    <frame tileid="19" duration="100"/>
                 </animation>
             </actor>
         </script>
@@ -152,6 +185,27 @@
             }
 
             class Barbell extends Actor {
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+            }
+
+            class Dumbbells extends Actor {
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+            }
+
+            class Locker extends Actor {
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+            }
+
+            class Shelf extends Actor {
                 constructor(args) {
                     super(args);
                     this.idle();
@@ -221,7 +275,7 @@
                     // Update/Render level
                     this.level.update(this.view, deltaTime);
                     this.level.render(this.view);
-                    // this.level.debug(this.view);
+                    this.level.debug(this.view);
                     // Time udpate
                     this.lastTime = currentTime;
                     // Next frame synchro
