@@ -47,10 +47,10 @@
                 <layer id="2" name="equipment" class="Colliders" width="7" height="7" locked="1" offsetx="0" offsety="0">
                     <data encoding="csv">
                         0,0,0,0,0,0,0,
-                        0,0,0,41,52,52,0,
+                        0,27,0,21,32,32,0,
                         0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0,
-                        0,54,55,0,44,45,0,
+                        0,34,35,0,24,25,0,
                         0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0
                     </data>
@@ -69,11 +69,11 @@
                 <layer id="4" name="litequipment" width="7" height="7" locked="1" offsetx="0" offsety="0">
                     <data encoding="csv">
                         0,0,0,0,0,0,0,
-                        0,0,43,0,0,0,0,
-                        0,53,0,0,0,56,0,
-                        0,46,0,0,0,51,0,
+                        0,0,23,0,0,0,0,
+                        0,33,0,0,0,36,0,
+                        0,26,0,0,0,31,0,
                         0,0,0,0,0,0,0,
-                        0,46,0,0,0,0,0,
+                        0,26,0,0,0,0,0,
                         0,0,0,0,0,0,0
                     </data>
                 </layer>
@@ -87,29 +87,33 @@
         <script id="character" type="text/xml">
             <actor version="0.2" name="bodybuilder" type="MOB" resource="#atlas" width="320" height="320" cols="10" rows="10">
                 <movement speed="80"/>
-                <collider x="0" y="0" width="22" height="22"/>
+                <collider x="8" y="24" width="16" height="8"/>
                 <animation name="idle">
-                    <frame tileid="61" duration="100"/>
+                    <frame tileid="41" duration="100"/>
                 </animation>
                 <animation name="moveUp">
-                    <frame tileid="8" duration="100"/>
-                    <frame tileid="9" duration="100"/>
-                    <frame tileid="10" duration="100"/>
+                    <frame tileid="58" duration="100"/>
+                    <frame tileid="59" duration="100"/>
+                    <frame tileid="68" duration="100"/>
+                    <frame tileid="69" duration="100"/>
                 </animation>
                 <animation name="moveDown">
-                    <frame tileid="0" duration="100"/>
-                    <frame tileid="1" duration="100"/>
-                    <frame tileid="2" duration="100"/>
+                    <frame tileid="46" duration="100"/>
+                    <frame tileid="47" duration="100"/>
+                    <frame tileid="48" duration="100"/>
+                    <frame tileid="49" duration="100"/>
                 </animation>
                 <animation name="moveLeft">
-                    <frame tileid="12" duration="100"/>
-                    <frame tileid="13" duration="100"/>
-                    <frame tileid="14" duration="100"/>
+                    <frame tileid="54" duration="100"/>
+                    <frame tileid="55" duration="100"/>
+                    <frame tileid="56" duration="100"/>
+                    <frame tileid="57" duration="100"/>
                 </animation>
                 <animation name="moveRight">
-                    <frame tileid="4" duration="100"/>
-                    <frame tileid="5" duration="100"/>
-                    <frame tileid="6" duration="100"/>
+                    <frame tileid="50" duration="100"/>
+                    <frame tileid="51" duration="100"/>
+                    <frame tileid="52" duration="100"/>
+                    <frame tileid="53" duration="100"/>
                 </animation>
             </actor>
         </script>
@@ -149,12 +153,13 @@
 
                 // Main loop
                 mainLoop(currentTime) {
+                    this.view.cls('#202728');
                     // Universal frame time
                     const deltaTime = (currentTime - this.lastTime) / 1000;
                     // Update/Render level
                     this.level.update(this.view, deltaTime);
                     this.level.render(this.view);
-                    this.level.debug(this.view);
+                    // this.level.debug(this.view);
                     // Time udpate
                     this.lastTime = currentTime;
                     // Next frame synchro
