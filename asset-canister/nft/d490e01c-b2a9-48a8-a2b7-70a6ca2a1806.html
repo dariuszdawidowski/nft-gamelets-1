@@ -57,13 +57,13 @@
                 </layer>
                 <layer id="3" name="walls" class="Colliders" width="7" height="7" locked="1" offsetx="0" offsety="0">
                     <data encoding="csv">
-                        100,100,100,100,100,100,100,
-                        100,0,0,0,0,0,100,
-                        100,0,0,0,0,0,100,
-                        100,0,0,0,0,0,100,
-                        100,0,0,0,0,0,100,
-                        100,0,0,0,0,0,100,
-                        100,100,100,100,100,100,100
+                        20,20,20,20,20,20,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,20,20,20,20,20,20
                     </data>
                 </layer>
                 <layer id="4" name="litequipment" width="7" height="7" locked="1" offsetx="0" offsety="0">
@@ -84,6 +84,9 @@
                 </objectgroup>
                 <objectgroup id="6" name="Characters" locked="1">
                     <object id="101" name="npc:character" type="Spawn" x="160" y="96">
+                        <point/>
+                    </object>
+                    <object id="102" name="obj:punchingbag" type="Spawn" x="120" y="100">
                         <point/>
                     </object>
                 </objectgroup>
@@ -124,14 +127,29 @@
         </script>
         <script id="barbell" type="text/xml">
             <actor version="0.2" name="barbell" type="Barbell" resource="#atlas" width="320" height="320" cols="10" rows="10">
-                <collider x="0" y="16" width="32" height="16"/>
+                <collider x="-4" y="16" width="40" height="16"/>
                 <animation name="idle">
                     <frame tileid="32" duration="100"/>
                 </animation>
             </actor>
         </script>
+        <script id="punchingbag" type="text/xml">
+            <actor version="0.2" name="punchingbag" type="PunchingBag" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="-4" y="16" width="25" height="16"/>
+                <animation name="idle">
+                    <frame tileid="16" duration="100"/>
+                </animation>
+            </actor>
+        </script>
         <canvas id="main"></canvas>
         <script type="text/javascript">
+
+            class PunchingBag extends Actor {
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+            }
 
             class Barbell extends Actor {
                 constructor(args) {
@@ -147,6 +165,7 @@
 
                 constructor() {
 
+                    this.paused = false;
                     this.view = new View({ canvas: document.getElementById('main') });
                     this.level = null;
                     this.scale = 4;
@@ -156,6 +175,20 @@
                         acx: new LoaderACX()
                     };
                     this.lastTime = 0;
+                    this.view.canvas.addEventListener('click', event => {
+                        if (this.level.actors.npc['character.1'].collideWithSprite({with: this.level.actors.obj['barbell.1'], view: this.view})) {
+                            console.log('barbell');
+                        }
+                        if (this.level.actors.npc['character.1'].collideWithSprite({with: this.level.actors.obj['punchingbag.2'], view: this.view})) {
+                            console.log('punchingbag');
+                        }
+                    });
+                    window.addEventListener('blur', () => {
+                        this.pause();
+                    });
+                    window.addEventListener('focus', () => {
+                        this.start();
+                    });
 
                 }
 
@@ -168,11 +201,17 @@
 
                 // Start loop
                 start() {
+                    this.paused = false;
                     requestAnimationFrame((currentTime) => {
                         this.lastTime = currentTime;
                         this.mainLoop(currentTime);
                     });
                 };
+
+                // Start loop
+                pause() {
+                    this.paused = true;
+                }
 
                 // Main loop
                 mainLoop(currentTime) {
@@ -186,7 +225,7 @@
                     // Time udpate
                     this.lastTime = currentTime;
                     // Next frame synchro
-                    requestAnimationFrame(this.mainLoop.bind(this));
+                    if (!this.paused) requestAnimationFrame(this.mainLoop.bind(this));
                 }
 
             }
