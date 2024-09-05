@@ -230,11 +230,21 @@
                     };
                     this.lastTime = 0;
                     this.view.canvas.addEventListener('click', event => {
-                        if (this.level.actors.npc['character.1'].collideWithSprite({with: this.level.actors.obj['barbell.1'], view: this.view})) {
-                            console.log('barbell');
-                        }
-                        if (this.level.actors.npc['character.1'].collideWithSprite({with: this.level.actors.obj['punchingbag.2'], view: this.view})) {
-                            console.log('punchingbag');
+                        for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                            if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
+                                switch(otherName.split('.')[0]) {
+                                    case 'barbell':
+                                        break;
+                                    case 'dumbbells':
+                                        break;
+                                    case 'locker':
+                                        break;
+                                    case 'punchingbag':
+                                        break;
+                                    case 'shelf':
+                                        break;
+                                }
+                            }
                         }
                     });
                     window.addEventListener('blur', () => {
