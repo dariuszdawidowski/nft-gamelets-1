@@ -90,7 +90,7 @@
             </map>
         </script>
         <script id="character" type="text/xml">
-            <actor version="0.2" name="bodybuilder" type="MOB" resource="#atlas" width="320" height="320" cols="10" rows="10">
+            <actor version="0.2" name="bodybuilder" type="Bodybuilder" resource="#atlas" width="320" height="320" cols="10" rows="10">
                 <movement speed="80"/>
                 <collider x="8" y="24" width="16" height="8"/>
                 <animation name="idle">
@@ -140,6 +140,8 @@
                 }
             }
 
+            class Bodybuilder extends MOB {
+            }
 
             class Gamelet {
 
