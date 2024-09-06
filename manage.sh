@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Pixelpunk Gamelets #1
-# v0.3.0
+# v0.4.0
 
 export MINTER_CANISTER=$(dfx canister id minter)
 
@@ -20,9 +20,9 @@ if [ $# == 0 ]; then
 fi
 
 if [ $1 == "deploy" ] && [ $2 == "assets" ]; then
-    echo "Installing Asset canister on a local replica..."
+    echo "Installing Asset canister..."
 
-    dfx deploy assets
+    dfx deploy assets $3
     
     exit 0
 fi
@@ -30,9 +30,9 @@ fi
 if [ $1 == "deploy" ] && [ $2 == "minter" ]; then
     echo "Installing Minter canister and initialize collection..."
 
-    dfx deploy minter --argument 'record {icrc7_args = null; icrc37_args =null; icrc3_args =null;}' --mode reinstall
-    dfx canister call minter init
-    dfx canister call minter icrc7_name --query
+    dfx deploy minter --argument 'record {icrc7_args = null; icrc37_args =null; icrc3_args =null;}' --mode reinstall $3
+    dfx canister call minter init $3
+    dfx canister call minter icrc7_name --query $3
     
     exit 0
 fi
@@ -61,9 +61,9 @@ if [ $1 == "mint" ]; then
             created_at_time = null;
         };
       },
-    )"
+    )" $4
 
-    dfx canister call minter icrc7_total_supply --query
+    dfx canister call minter icrc7_total_supply --query $4
     
     exit 0
 fi
@@ -79,7 +79,7 @@ if [ $1 == "transfer" ]; then
         memo = null;
         created_at_time = null;}})"
 
-    dfx canister call minter icrc7_owner_of "(vec {$2})" --query
+    dfx canister call minter icrc7_owner_of "(vec {$2})" --query $4
 
     exit 0
 fi
