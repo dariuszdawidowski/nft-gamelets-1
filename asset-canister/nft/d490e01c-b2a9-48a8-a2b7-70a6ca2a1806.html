@@ -195,10 +195,13 @@
             </actor>
         </script>
         <script id="locker" type="text/xml">
-            <actor version="0.2" name="locker" type="ColliderMask" resource="#atlas" width="320" height="320" cols="10" rows="10">
+            <actor version="0.2" name="locker" type="Locker" resource="#atlas" width="320" height="320" cols="10" rows="10">
                 <collider x="0" y="0" width="38" height="42"/>
                 <animation name="idle">
                     <frame tileid="19" duration="100"/>
+                </animation>
+                <animation name="open">
+                    <frame tileid="36" duration="100"/>
                 </animation>
             </actor>
         </script>
@@ -272,6 +275,32 @@
 
             }
 
+            class Locker extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+                open(time) {
+                    this.duration = time;
+                    this.action = 'open';
+                    this.animate(this.action, 0.01);
+                }
+
+                update(args) {
+                    if (this.duration > 0) {
+                        this.duration -= args.deltaTime;
+                        this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.action = 'idle';
+                        this.animate(this.action, args.deltaTime);
+                    }
+                }
+
+            }
+
             class Bodybuilder extends MOB {
 
                 packingBarbell(time) {
@@ -293,7 +322,8 @@
 
                 openTheLocker() {
                     this.duration = 2;
-                    this.action = 'openTheLocker';
+                    this.action = 'idle';
+                    this.animate(this.action, 0.01);
                 }
 
                 update(args) {
@@ -329,7 +359,8 @@
                     this.lastTime = 0;
                     this.view.canvas.addEventListener('click', event => {
                         // console.log(this.level.actors.obj)
-                        // const duration = randomRangeInt(10, 20);
+                        // this.level.actors.npc['character.1'].openTheLocker(2);
+                        // this.level.actors.obj['locker.3'].open(2);
                         // return;
                         for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
                             if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
@@ -339,11 +370,9 @@
                                         this.level.actors.npc['character.1'].packingBarbell(duration);
                                         this.level.actors.obj['barbell.1'].use(duration);
                                         break;
-                                    case 'dumbbells':
-                                        //this.level.actors.npc['rat.2'].packingDumbbells();
-                                        break;
                                     case 'locker':
-                                        this.level.actors.npc['character.1'].openTheLocker();
+                                        this.level.actors.npc['character.1'].openTheLocker(2);
+                                        this.level.actors.obj['locker.3'].open(2);
                                         break;
                                     case 'punchingbag':
                                         this.level.actors.npc['character.1'].boxing(duration);
@@ -394,7 +423,7 @@
                     // Update/Render level
                     this.level.update(this.view, deltaTime);
                     this.level.render(this.view);
-                    // this.level.debug(this.view);
+                    this.level.debug(this.view);
                     // Time udpate
                     this.lastTime = currentTime;
                     // Next frame synchro
