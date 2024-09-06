@@ -164,10 +164,13 @@
             </actor>
         </script>
         <script id="barbell" type="text/xml">
-            <actor version="0.2" name="barbell" type="ColliderMask" resource="#atlas" width="320" height="320" cols="10" rows="10">
+            <actor version="0.2" name="barbell" type="Barbell" resource="#atlas" width="320" height="320" cols="10" rows="10">
                 <collider x="-4" y="16" width="40" height="16"/>
                 <animation name="idle">
                     <frame tileid="32" duration="100"/>
+                </animation>
+                <animation name="use">
+                    <frame tileid="19" duration="100"/>
                 </animation>
             </actor>
         </script>
@@ -180,10 +183,14 @@
             </actor>
         </script>
         <script id="punchingbag" type="text/xml">
-            <actor version="0.2" name="punchingbag" type="ColliderMask" resource="#atlas" width="320" height="320" cols="10" rows="10">
+            <actor version="0.2" name="punchingbag" type="PunchingBag" resource="#atlas" width="320" height="320" cols="10" rows="10">
                 <collider x="-4" y="16" width="25" height="16"/>
                 <animation name="idle">
                     <frame tileid="16" duration="100"/>
+                </animation>
+                <animation name="hit">
+                    <frame tileid="17" duration="100"/>
+                    <frame tileid="18" duration="100"/>
                 </animation>
             </actor>
         </script>
@@ -207,27 +214,81 @@
         <script type="text/javascript">
 
             class ColliderMask extends Actor {
+
                 constructor(args) {
                     super(args);
                     this.idle();
                 }
+
+            }
+
+            class Barbell extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+                use(time) {
+                    this.duration = time;
+                    this.action = 'use';
+                }
+
+                update(args) {
+                    if (this.duration > 0) {
+                        this.duration -= args.deltaTime;
+                        this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.action = 'idle';
+                        this.animate(this.action, args.deltaTime);
+                    }
+                }
+
+            }
+
+            class PunchingBag extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+                hit(time) {
+                    this.duration = time;
+                    this.action = 'hit';
+                }
+
+                update(args) {
+                    if (this.duration > 0) {
+                        this.duration -= args.deltaTime;
+                        this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.action = 'idle';
+                        this.animate(this.action, args.deltaTime);
+                    }
+                }
+
             }
 
             class Bodybuilder extends MOB {
 
-                packingBarbell() {
-                    this.duration = 20;
+                packingBarbell(time) {
+                    this.duration = time;
                     this.action = 'packingBarbell';
                 }
 
-                packingDumbbells() {
-                    this.duration = 20;
+                packingDumbbells(time) {
+                    this.duration = time;
                     this.action = 'packingDumbbells';
                 }
 
-                boxing() {
-                    this.duration = 20;
+                boxing(time) {
+                    this.duration = time;
                     this.action = 'boxing';
+                    this.transform.x = 380;
+                    this.transform.y = 410;
                 }
 
                 openTheLocker() {
@@ -267,11 +328,16 @@
                     };
                     this.lastTime = 0;
                     this.view.canvas.addEventListener('click', event => {
+                        // console.log(this.level.actors.obj)
+                        // const duration = randomRangeInt(10, 20);
+                        // return;
                         for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
                             if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
+                                const duration = randomRangeInt(10, 20);
                                 switch(otherName.split('.')[0]) {
                                     case 'barbell':
-                                        this.level.actors.npc['character.1'].packingBarbell();
+                                        this.level.actors.npc['character.1'].packingBarbell(duration);
+                                        this.level.actors.obj['barbell.1'].use(duration);
                                         break;
                                     case 'dumbbells':
                                         //this.level.actors.npc['rat.2'].packingDumbbells();
@@ -280,10 +346,11 @@
                                         this.level.actors.npc['character.1'].openTheLocker();
                                         break;
                                     case 'punchingbag':
-                                        this.level.actors.npc['character.1'].boxing();
+                                        this.level.actors.npc['character.1'].boxing(duration);
+                                        this.level.actors.obj['punchingbag.5'].hit(duration);
                                         break;
                                     case 'shelf':
-                                        this.level.actors.npc['character.1'].packingDumbbells();
+                                        this.level.actors.npc['character.1'].packingDumbbells(duration);
                                         break;
                                 }
                             }
