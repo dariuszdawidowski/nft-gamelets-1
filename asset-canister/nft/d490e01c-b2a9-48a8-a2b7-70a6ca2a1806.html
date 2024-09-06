@@ -188,8 +188,21 @@
                 <animation name="boxing">
                     <frame tileid="6" duration="100"/>
                     <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
                     <frame tileid="8" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
                     <frame tileid="9" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
                 </animation>
                 <animation name="openTheLocker">
                     <frame tileid="41" duration="100"/>
@@ -222,8 +235,23 @@
                     <frame tileid="16" duration="100"/>
                 </animation>
                 <animation name="hit">
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
                     <frame tileid="17" duration="100"/>
+                    <frame tileid="16" duration="100"/>
                     <frame tileid="18" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="17" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="18" duration="100"/>
+                    <frame tileid="16" duration="100"/>
                 </animation>
             </actor>
         </script>
@@ -407,40 +435,46 @@
                     this.rat = null;
                     this.view.canvas.addEventListener('click', event => {
                         // Character collisions
-                        for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
-                            if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
-                                const duration = randomRangeInt(10, 20);
-                                switch(otherName.split('.')[0]) {
-                                    case 'barbell':
-                                        this.level.actors.npc['character.1'].packingBarbell(duration);
-                                        this.level.actors.obj['barbell.1'].use(duration);
-                                        break;
-                                    case 'locker':
-                                        this.level.actors.npc['character.1'].openTheLocker(1);
-                                        this.level.actors.obj['locker.3'].open(1);
-                                        this.spawnRat();
-                                        break;
-                                    case 'punchingbag':
-                                        this.level.actors.npc['character.1'].boxing(duration);
-                                        this.level.actors.obj['punchingbag.5'].hit(duration);
-                                        break;
-                                    case 'shelf':
-                                        this.level.actors.npc['character.1'].packingDumbbells(duration);
-                                        break;
+                        if (this.level.actors.npc['character.1'].action == 'wander') {
+                            for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                                if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
+                                    const duration = randomRangeInt(10, 20);
+                                    switch(otherName.split('.')[0]) {
+                                        case 'barbell':
+                                            this.level.actors.npc['character.1'].packingBarbell(duration);
+                                            this.level.actors.obj['barbell.1'].use(duration);
+                                            break;
+                                        case 'locker':
+                                            this.level.actors.npc['character.1'].openTheLocker(1);
+                                            this.level.actors.obj['locker.3'].open(1);
+                                            this.spawnRat();
+                                            break;
+                                        case 'punchingbag':
+                                            this.level.actors.npc['character.1'].boxing(duration);
+                                            this.level.actors.obj['punchingbag.5'].hit(duration);
+                                            break;
+                                        case 'shelf':
+                                            this.level.actors.npc['character.1'].packingDumbbells(duration);
+                                            break;
+                                    }
                                 }
                             }
                         }
+
                         // Rat collisions
-                        if (this.rat) for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
-                            if (this.level.actors.npc['rat.2'].collideWithSprite({with: otherObj, view: this.view})) {
-                                const duration = randomRangeInt(10, 20);
-                                switch(otherName.split('.')[0]) {
-                                    case 'dumbbells':
-                                        this.level.actors.npc['rat.2'].packingDumbbells(duration);
-                                        break;
+                        if (this.rat && this.level.actors.npc['rat.2'].action == 'wander') {
+                            for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                                if (this.level.actors.npc['rat.2'].collideWithSprite({with: otherObj, view: this.view})) {
+                                    const duration = randomRangeInt(10, 20);
+                                    switch(otherName.split('.')[0]) {
+                                        case 'dumbbells':
+                                            this.level.actors.npc['rat.2'].packingDumbbells(duration);
+                                            break;
+                                    }
                                 }
                             }
                         }
+
                     });
                     window.addEventListener('blur', () => {
                         this.pause();
