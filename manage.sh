@@ -12,6 +12,7 @@ function help () {
     echo "  deploy <canister> [--ic] - deploy canister"
     echo "  mint <nft id> <asset url> [--ic] - mint collection"
     echo "  transfer <nft id> <to principal> [--ic] - transfer NFT to new owner"
+    echo "  redeem <code> - coupon code"
 }
 
 if [ $# == 0 ]; then
@@ -22,7 +23,7 @@ fi
 if [ $1 == "deploy" ] && [ $2 == "assets" ]; then
     echo "Installing Asset canister..."
 
-    dfx deploy assets $3
+    dfx deploy assets --ic
     
     exit 0
 fi
@@ -30,9 +31,9 @@ fi
 if [ $1 == "deploy" ] && [ $2 == "minter" ]; then
     echo "Installing Minter canister and initialize collection..."
 
-    dfx deploy minter --argument 'record {icrc7_args = null; icrc37_args =null; icrc3_args =null;}' --mode reinstall $3
-    dfx canister call minter init $3
-    dfx canister call minter icrc7_name --query $3
+    dfx deploy minter --argument 'record {icrc7_args = null; icrc37_args =null; icrc3_args =null;}' --mode reinstall --ic
+    dfx canister call minter init --ic
+    dfx canister call minter icrc7_name --query --ic
     
     exit 0
 fi
@@ -61,9 +62,9 @@ if [ $1 == "mint" ]; then
             created_at_time = null;
         };
       },
-    )" $4
+    )" --ic
 
-    dfx canister call minter icrc7_total_supply --query $4
+    dfx canister call minter icrc7_total_supply --query --ic
     
     exit 0
 fi
@@ -81,6 +82,12 @@ if [ $1 == "transfer" ]; then
 
     dfx canister call minter icrc7_owner_of "(vec {$2})" --query $4
 
+    exit 0
+fi
+
+if [ $1 == "redeem" ]; then
+    # dfx canister --network=ic call fg7gi-vyaaa-aaaal-qadca-cai redeem "(\"$1\")"
+    dfx cycles --ic redeem-faucet-coupon $2
     exit 0
 fi
 

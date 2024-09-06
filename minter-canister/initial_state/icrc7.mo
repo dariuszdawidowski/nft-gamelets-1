@@ -6,7 +6,7 @@ module{
         symbol = ?"PPGL1";
         name = ?"Pixelpunk Gamelets #1";
         description = ?"A Collection of interactive micro-game NFTs";
-        logo = ?"http://bw4dl-smaaa-aaaaa-qaacq-cai.localhost:8080/Collection-logo.png";
+        logo = ?"https://4smx4-eqaaa-aaaap-ahxlq-cai.icp0.io/Collection-logo.png";
         supply_cap = null;
         allow_transfers = null;
         max_query_batch_size = ?100;
