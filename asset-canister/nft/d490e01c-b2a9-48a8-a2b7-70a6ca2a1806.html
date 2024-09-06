@@ -95,11 +95,47 @@
                     <object id="104" name="npc:character" type="Spawn" x="160" y="96">
                         <point/>
                     </object>
+                    <object id="106" name="npc:rat" type="Spawn" x="55" y="68">
+                        <point/>
+                    </object>
                     <object id="105" name="obj:punchingbag" type="Spawn" x="120" y="100">
                         <point/>
                     </object>
                 </objectgroup>
             </map>
+        </script>
+        <script id="rat" type="text/xml">
+            <actor version="0.2" name="rat" type="Rat" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <movement speed="80"/>
+                <collider x="8" y="24" width="16" height="8"/>
+                <animation name="idle">
+                    <frame tileid="37" duration="100"/>
+                </animation>
+                <animation name="moveUp">
+                    <frame tileid="37" duration="100"/>
+                    <frame tileid="38" duration="100"/>
+                    <frame tileid="39" duration="100"/>
+                </animation>
+                <animation name="moveDown">
+                    <frame tileid="27" duration="100"/>
+                    <frame tileid="28" duration="100"/>
+                    <frame tileid="29" duration="100"/>
+                </animation>
+                <animation name="moveLeft">
+                    <frame tileid="27" duration="100"/>
+                    <frame tileid="28" duration="100"/>
+                    <frame tileid="29" duration="100"/>
+                </animation>
+                <animation name="moveRight">
+                    <frame tileid="37" duration="100"/>
+                    <frame tileid="38" duration="100"/>
+                    <frame tileid="39" duration="100"/>
+                </animation>
+                <animation name="packingDumbbells">
+                    <frame tileid="78" duration="100"/>
+                    <frame tileid="79" duration="100"/>
+                </animation>
+            </actor>
         </script>
         <script id="character" type="text/xml">
             <actor version="0.2" name="bodybuilder" type="Bodybuilder" resource="#atlas" width="320" height="320" cols="10" rows="10">
@@ -339,8 +375,21 @@
 
             class Rat extends MOB {
 
-                packingDumbbell() {
+                packingDumbbells(time) {
+                    this.duration = time;
+                    this.action = 'packingDumbbells';
                 }
+
+                update(args) {
+                    super.update(args);
+                    if (this.duration > 0) {
+                        if (!['idle', 'wander'].includes(this.action)) this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.wander();
+                    }
+                }
+
             }
 
             class Gamelet {
@@ -358,10 +407,12 @@
                     };
                     this.lastTime = 0;
                     this.view.canvas.addEventListener('click', event => {
-                        // console.log(this.level.actors.obj)
-                        // this.level.actors.npc['character.1'].openTheLocker(2);
-                        // this.level.actors.obj['locker.3'].open(2);
+                        // console.log(this.level.actors)
+                        // this.level.actors.npc['character.1'].openTheLocker(1);
+                        // this.level.actors.obj['locker.3'].open(1);
+                        // this.level.actors.npc['rat.2'].packingDumbbells(10);
                         // return;
+                        // Character collisions
                         for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
                             if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
                                 const duration = randomRangeInt(10, 20);
@@ -371,8 +422,8 @@
                                         this.level.actors.obj['barbell.1'].use(duration);
                                         break;
                                     case 'locker':
-                                        this.level.actors.npc['character.1'].openTheLocker(2);
-                                        this.level.actors.obj['locker.3'].open(2);
+                                        this.level.actors.npc['character.1'].openTheLocker(1);
+                                        this.level.actors.obj['locker.3'].open(1);
                                         break;
                                     case 'punchingbag':
                                         this.level.actors.npc['character.1'].boxing(duration);
@@ -380,6 +431,17 @@
                                         break;
                                     case 'shelf':
                                         this.level.actors.npc['character.1'].packingDumbbells(duration);
+                                        break;
+                                }
+                            }
+                        }
+                        // Rat collisions
+                        for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                            if (this.level.actors.npc['rat.2'].collideWithSprite({with: otherObj, view: this.view})) {
+                                const duration = randomRangeInt(10, 20);
+                                switch(otherName.split('.')[0]) {
+                                    case 'dumbbells':
+                                        this.level.actors.npc['rat.2'].packingDumbbells(duration);
                                         break;
                                 }
                             }
@@ -395,9 +457,17 @@
                 }
 
                 async load() {
-                    const tileset = await this.loader.tsx.parseTileSet({ xml: document.getElementById('tiles').innerText, resource: '#atlas', scale: this.scale });
+                    const tileset = await this.loader.tsx.parseTileSet({
+                        xml: document.getElementById('tiles').innerText,
+                        resource: '#atlas',
+                        scale: this.scale
+                    });
                     this.loader.tmx = new LoaderTMX({'tilesets': {'tiles': tileset}});
-                    this.level = await this.loader.tmx.parseLevel({ xml: document.getElementById('map').innerText, scale: this.scale, prefetch: false });
+                    this.level = await this.loader.tmx.parseLevel({
+                        xml: document.getElementById('map').innerText,
+                        scale: this.scale,
+                        prefetch: false
+                    });
                     this.view.centre({x: 448, y: 448});
                 }
 
@@ -423,7 +493,7 @@
                     // Update/Render level
                     this.level.update(this.view, deltaTime);
                     this.level.render(this.view);
-                    this.level.debug(this.view);
+                    // this.level.debug(this.view);
                     // Time udpate
                     this.lastTime = currentTime;
                     // Next frame synchro
@@ -431,7 +501,6 @@
                 }
 
             }
-
 
             // Init
             window.addEventListener('load', () => {
