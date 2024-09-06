@@ -95,9 +95,6 @@
                     <object id="104" name="npc:character" type="Spawn" x="160" y="96">
                         <point/>
                     </object>
-                    <object id="106" name="npc:rat" type="Spawn" x="55" y="68">
-                        <point/>
-                    </object>
                     <object id="105" name="obj:punchingbag" type="Spawn" x="120" y="100">
                         <point/>
                     </object>
@@ -382,6 +379,7 @@
 
                 update(args) {
                     super.update(args);
+                    this.lifetime -= args.deltaTime;
                     if (this.duration > 0) {
                         if (!['idle', 'wander'].includes(this.action)) this.animate(this.action, args.deltaTime);
                     }
@@ -406,12 +404,8 @@
                         acx: new LoaderACX()
                     };
                     this.lastTime = 0;
+                    this.rat = null;
                     this.view.canvas.addEventListener('click', event => {
-                        // console.log(this.level.actors)
-                        // this.level.actors.npc['character.1'].openTheLocker(1);
-                        // this.level.actors.obj['locker.3'].open(1);
-                        // this.level.actors.npc['rat.2'].packingDumbbells(10);
-                        // return;
                         // Character collisions
                         for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
                             if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
@@ -424,6 +418,7 @@
                                     case 'locker':
                                         this.level.actors.npc['character.1'].openTheLocker(1);
                                         this.level.actors.obj['locker.3'].open(1);
+                                        this.spawnRat();
                                         break;
                                     case 'punchingbag':
                                         this.level.actors.npc['character.1'].boxing(duration);
@@ -436,7 +431,7 @@
                             }
                         }
                         // Rat collisions
-                        for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                        if (this.rat) for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
                             if (this.level.actors.npc['rat.2'].collideWithSprite({with: otherObj, view: this.view})) {
                                 const duration = randomRangeInt(10, 20);
                                 switch(otherName.split('.')[0]) {
@@ -471,6 +466,29 @@
                     this.view.centre({x: 448, y: 448});
                 }
 
+                // Spawn rat
+                spawnRat() {
+                    if (!this.rat) {
+                        this.rat = this.loader.acx.parseActor({
+                            xml: document.getElementById('rat').innerText,
+                            scale: this.scale
+                        });
+                        this.level.actors.npc['rat.2'] = this.rat;
+                        this.level.getLayer('characters').actors.push('rat.2');
+                        this.rat.position(55 * this.scale, 68 * this.scale);
+                        this.rat.idle();
+                        this.rat.lifetime = 60 * 5; // sec
+                    }
+                };
+
+                // Remove rat
+                removeRat() {
+                    const index = this.level.getLayer('characters').actors.indexOf('rat.2');
+                    if (index !== -1) this.level.getLayer('characters').actors.splice(index, 1);
+                    delete this.level.actors.npc['rat.2'];
+                    this.rat = null;
+                };
+
                 // Start loop
                 start() {
                     this.paused = false;
@@ -490,6 +508,8 @@
                     this.view.cls('#202728');
                     // Universal frame time
                     const deltaTime = (currentTime - this.lastTime) / 1000;
+                    // Rat lifetime
+                    if (this.rat && this.rat.lifetime <= 0) this.removeRat();
                     // Update/Render level
                     this.level.update(this.view, deltaTime);
                     this.level.render(this.view);
