@@ -104,7 +104,7 @@
         </script>
         <script id="rat" type="text/xml">
             <actor version="0.2" name="rat" type="Rat" resource="#atlas" width="320" height="320" cols="10" rows="10">
-                <movement speed="80"/>
+                <movement speed="20"/>
                 <collider x="8" y="24" width="16" height="8"/>
                 <animation name="idle">
                     <frame tileid="37" duration="100"/>
@@ -137,7 +137,7 @@
         </script>
         <script id="character" type="text/xml">
             <actor version="0.2" name="bodybuilder" type="Bodybuilder" resource="#atlas" width="320" height="320" cols="10" rows="10">
-                <movement speed="80"/>
+                <movement speed="20"/>
                 <collider x="8" y="24" width="16" height="8"/>
                 <animation name="idle">
                     <frame tileid="41" duration="100"/>
@@ -278,6 +278,15 @@
         <canvas id="main"></canvas>
         <script type="text/javascript">
 
+            // Phone test
+            function isPhone() {
+                const phone = /iPhone|iPod|Android/.test(navigator.userAgent);
+                const tablet = /iPad|Tablet|Xoom|Kindle/.test(navigator.userAgent);
+                return phone && !tablet;
+            }
+
+            const SCALE = isPhone() ? 6 : 4;
+
             class ColliderMask extends Actor {
 
                 constructor(args) {
@@ -378,8 +387,8 @@
                 boxing(time) {
                     this.duration = time;
                     this.action = 'boxing';
-                    this.transform.x = 380;
-                    this.transform.y = 410;
+                    this.transform.x = 95 * SCALE;
+                    this.transform.y = 102 * SCALE;
                 }
 
                 openTheLocker() {
@@ -426,7 +435,6 @@
                     this.paused = false;
                     this.view = new View({ canvas: document.getElementById('main') });
                     this.level = null;
-                    this.scale = this.isPhone() ? 6 : 4;
                     this.loader = {
                         tsx: new LoaderTSX(),
                         tmx: null,
@@ -486,27 +494,20 @@
 
                 }
 
-                // Phone display size test
-                isPhone() {
-                    const mediaQuery = window.matchMedia("(max-width: 767px)");
-                    const isTablet = /iPad|Tablet|Xoom|Kindle/.test(navigator.userAgent);
-                    return mediaQuery.matches && !isTablet;
-                }
-
                 // Load resources
                 async load() {
                     const tileset = await this.loader.tsx.parseTileSet({
                         xml: document.getElementById('tiles').innerText,
                         resource: '#atlas',
-                        scale: this.scale
+                        scale: SCALE
                     });
                     this.loader.tmx = new LoaderTMX({'tilesets': {'tiles': tileset}});
                     this.level = await this.loader.tmx.parseLevel({
                         xml: document.getElementById('map').innerText,
-                        scale: this.scale,
+                        scale: SCALE,
                         prefetch: false
                     });
-                    this.view.centre({x: 112 * this.scale, y: 112 * this.scale});
+                    this.view.centre({x: 112 * SCALE, y: 112 * SCALE});
                 }
 
                 // Spawn rat
@@ -514,11 +515,11 @@
                     if (!this.rat) {
                         this.rat = this.loader.acx.parseActor({
                             xml: document.getElementById('rat').innerText,
-                            scale: this.scale
+                            scale: SCALE
                         });
                         this.level.actors.npc['rat.2'] = this.rat;
                         this.level.getLayer('characters').actors.push('rat.2');
-                        this.rat.position(55 * this.scale, 68 * this.scale);
+                        this.rat.position(55 * SCALE, 68 * SCALE);
                         this.rat.idle();
                         this.rat.lifetime = 60 * 5; // sec
                     }
