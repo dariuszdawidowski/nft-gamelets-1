@@ -460,6 +460,34 @@
                     this.lastTime = 0;
                     this.rat = null;
                     this.ratex = document.getElementById('ratex-logo');
+                    this.meter = {
+                        value: 0,
+                        max: 100,
+                        fire: 0,
+                        pump: function(duration) {
+                            this.fire += duration;
+                        },
+                        inc: function(amount) {
+                            this.value += amount * 2;
+                            if (this.value > this.max) this.value = this.max;
+                        },
+                        dec: function(amount) {
+                            this.value -= amount * 2;
+                            if (this.value < 0.0) this.value = 0;
+                        },
+                        getNormalized: function() {
+                            return this.value / this.max;
+                        },
+                        update: function(deltaTime) {
+                            if (this.fire > 0) {
+                                this.fire -= deltaTime;
+                                this.inc(deltaTime);
+                            }
+                            else {
+                                this.dec(deltaTime);
+                            }
+                        },
+                    };
                     this.view.canvas.addEventListener('click', event => {
                         this.characterCollisions();
                         this.ratCollisions();
@@ -499,6 +527,7 @@
                                     case 'barbell':
                                         this.level.actors.npc['character.1'].packingBarbell(duration);
                                         this.level.actors.obj['barbell.1'].use(duration);
+                                        this.meter.pump(duration);
                                         return;
                                         break;
                                     case 'locker':
@@ -510,10 +539,12 @@
                                     case 'punchingbag':
                                         this.level.actors.npc['character.1'].boxing(duration);
                                         this.level.actors.obj['punchingbag.5'].hit(duration);
+                                        this.meter.pump(duration);
                                         return;
                                         break;
                                     case 'shelf':
                                         this.level.actors.npc['character.1'].packingDumbbells(duration);
+                                        this.meter.pump(duration);
                                         return;
                                         break;
                                 }
@@ -587,10 +618,13 @@
                     this.level.update(this.view, deltaTime);
                     this.level.render(this.view);
                     // Ratex coin
+                    this.meter.update(deltaTime);
                     const width = isPhone() ? 32 : 16;
                     const range = isPhone() ? 164 : 176;
                     const pos = this.view.world2Screen({x: range * SCALE, y : range * SCALE});
+                    this.view.ctx.globalAlpha = this.meter.getNormalized();
                     this.view.ctx.drawImage(this.ratex, pos.x, pos.y, width * SCALE, width * SCALE);
+                    this.view.ctx.globalAlpha = 1.0;
                     // Time udpate
                     this.lastTime = currentTime;
                     // Next frame synchro
