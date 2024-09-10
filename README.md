@@ -1,4 +1,4 @@
-Pixelpunk NFT collection 
+Pixelpunk NFT collection
 "Gamelets #1"
 v1.0.1
 
