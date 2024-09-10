@@ -1,5 +1,6 @@
 Pixelpunk NFT collection 
 "Gamelets #1"
+v1.0.1
 
 Authors (c) 2024 
 Dariusz Dawidowski 

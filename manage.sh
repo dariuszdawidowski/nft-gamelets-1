@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Pixelpunk Gamelets #1
+# NFT Manage script
 # v0.4.1
 
 function help () {
