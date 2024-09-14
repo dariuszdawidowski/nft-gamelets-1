@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Pixelpunk Gamelets NFT Collection #1</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="engine" content="v1">
+        <style type="text/css">
+
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                background-color: #202728;
+                font-family: "Courier New", Courier, monospace;
+                color: #aaa;
+                font-size: 12px;
+            }
+
+            @media only screen and (max-width: 767px) {
+
+                body {
+                    font-size: 16px;
+                }
+
+            }
+
+        </style>
+        <script src="../asset-canister/jrpg-stellar-engine.js"></script>
+    </head>
+
+    <body>
+        <div style="display: none;">
+            <img id="atlas" src="test.png">
+            <img id="ratex-logo" src="../asset-canister/Ratex-logo.png">
+        </div>
+        <script id="tiles" type="text/xml">
+            <tileset version="1.10" tiledversion="1.10.2" name="atlas" tilewidth="32" tileheight="32" tilecount="100" columns="10">
+                <image width="320" height="320"/>
+            </tileset>
+        </script>
+        <script id="map" type="text/xml">
+            <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32">
+                <tileset firstgid="1" source="tiles"/>
+                <layer id="1" name="ground" width="7" height="7" locked="1" offsetx="0" offsety="0">
+                    <data encoding="csv">
+                        0,0,0,0,0,0,0,
+                        0,1,3,3,4,2,0,
+                        0,5,15,15,15,6,0,
+                        0,5,16,15,15,6,0,
+                        0,5,16,15,16,6,0,
+                        0,11,13,14,13,12,0,
+                        0,0,0,0,0,0,0
+                    </data>
+                </layer>
+                <layer id="2" name="equipment" class="Colliders" width="7" height="7" locked="1" offsetx="0" offsety="0">
+                    <data encoding="csv">
+                        0,0,0,0,0,0,0,
+                        0,27,0,21,32,32,0,
+                        0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,
+                        0,34,35,0,24,25,0,
+                        0,31,0,0,0,0,0,
+                        0,0,0,0,0,0,0
+                    </data>
+                </layer>
+                <layer id="3" name="walls" class="Colliders" width="7" height="7" locked="1" offsetx="0" offsety="0">
+                    <data encoding="csv">
+                        20,20,20,20,20,20,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,0,0,0,0,0,20,
+                        20,20,20,20,20,20,20
+                    </data>
+                </layer>
+                <layer id="4" name="litequipment" width="7" height="7" locked="1" offsetx="0" offsety="0">
+                    <data encoding="csv">
+                        0,0,0,0,0,0,0,
+                        0,0,23,0,0,0,0,
+                        0,0,0,0,0,0,0,
+                        0,26,0,0,0,36,0,
+                        0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0
+                    </data>
+                </layer>
+                <objectgroup id="5" name="Objects" locked="1">
+                    <object id="100" name="obj:barbell" type="Spawn" x="52" y="80">
+                        <point/>
+                    </object>
+                    <object id="101" name="obj:dumbbells" type="Spawn" x="168" y="124">
+                        <point/>
+                    </object>
+                    <object id="102" name="obj:locker" type="Spawn" x="48" y="48">
+                        <point/>
+                    </object>
+                    <object id="103" name="obj:shelf" type="Spawn" x="144" y="48">
+                        <point/>
+                    </object>
+                </objectgroup>
+                <objectgroup id="6" name="Characters" locked="1">
+                    <object id="104" name="npc:character" type="Spawn" x="160" y="96">
+                        <point/>
+                    </object>
+                    <object id="105" name="obj:punchingbag" type="Spawn" x="120" y="100">
+                        <point/>
+                    </object>
+                </objectgroup>
+            </map>
+        </script>
+        <script id="rat" type="text/xml">
+            <actor version="0.2" name="rat" type="Rat" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <movement speed="20"/>
+                <collider x="8" y="24" width="16" height="8"/>
+                <animation name="idle">
+                    <frame tileid="37" duration="100"/>
+                </animation>
+                <animation name="moveUp">
+                    <frame tileid="37" duration="100"/>
+                    <frame tileid="38" duration="100"/>
+                    <frame tileid="39" duration="100"/>
+                </animation>
+                <animation name="moveDown">
+                    <frame tileid="27" duration="100"/>
+                    <frame tileid="28" duration="100"/>
+                    <frame tileid="29" duration="100"/>
+                </animation>
+                <animation name="moveLeft">
+                    <frame tileid="27" duration="100"/>
+                    <frame tileid="28" duration="100"/>
+                    <frame tileid="29" duration="100"/>
+                </animation>
+                <animation name="moveRight">
+                    <frame tileid="37" duration="100"/>
+                    <frame tileid="38" duration="100"/>
+                    <frame tileid="39" duration="100"/>
+                </animation>
+                <animation name="packingDumbbells">
+                    <frame tileid="78" duration="100"/>
+                    <frame tileid="79" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="character" type="text/xml">
+            <actor version="0.2" name="bodybuilder" type="Bodybuilder" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <movement speed="20"/>
+                <collider x="8" y="24" width="16" height="8"/>
+                <animation name="idle">
+                    <frame tileid="41" duration="100"/>
+                </animation>
+                <animation name="moveUp">
+                    <frame tileid="58" duration="100"/>
+                    <frame tileid="59" duration="100"/>
+                    <frame tileid="68" duration="100"/>
+                    <frame tileid="69" duration="100"/>
+                </animation>
+                <animation name="moveDown">
+                    <frame tileid="46" duration="100"/>
+                    <frame tileid="47" duration="100"/>
+                    <frame tileid="48" duration="100"/>
+                    <frame tileid="49" duration="100"/>
+                </animation>
+                <animation name="moveLeft">
+                    <frame tileid="54" duration="100"/>
+                    <frame tileid="55" duration="100"/>
+                    <frame tileid="56" duration="100"/>
+                    <frame tileid="57" duration="100"/>
+                </animation>
+                <animation name="moveRight">
+                    <frame tileid="50" duration="100"/>
+                    <frame tileid="51" duration="100"/>
+                    <frame tileid="52" duration="100"/>
+                    <frame tileid="53" duration="100"/>
+                </animation>
+                <animation name="packingBarbell">
+                    <frame tileid="70" duration="100"/>
+                    <frame tileid="71" duration="100"/>
+                    <frame tileid="72" duration="100"/>
+                    <frame tileid="73" duration="100"/>
+                    <frame tileid="74" duration="100"/>
+                    <frame tileid="75" duration="100"/>
+                    <frame tileid="76" duration="100"/>
+                    <frame tileid="77" duration="100"/>
+                </animation>
+                <animation name="packingDumbbells">
+                    <frame tileid="60" duration="100"/>
+                    <frame tileid="61" duration="100"/>
+                    <frame tileid="62" duration="100"/>
+                    <frame tileid="63" duration="100"/>
+                    <frame tileid="64" duration="100"/>
+                    <frame tileid="65" duration="100"/>
+                    <frame tileid="66" duration="100"/>
+                    <frame tileid="67" duration="100"/>
+                </animation>
+                <animation name="boxing">
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="8" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="9" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                    <frame tileid="7" duration="100"/>
+                    <frame tileid="6" duration="100"/>
+                </animation>
+                <animation name="openTheLocker">
+                    <frame tileid="41" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="barbell" type="text/xml">
+            <actor version="0.2" name="barbell" type="Barbell" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="-4" y="16" width="40" height="16"/>
+                <animation name="idle">
+                    <frame tileid="32" duration="100"/>
+                </animation>
+                <animation name="use">
+                    <frame tileid="19" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="dumbbells" type="text/xml">
+            <actor version="0.2" name="dumbbells" type="ColliderMask" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="8" y="8" width="16" height="16"/>
+                <animation name="idle">
+                    <frame tileid="19" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="punchingbag" type="text/xml">
+            <actor version="0.2" name="punchingbag" type="PunchingBag" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="-4" y="16" width="25" height="16"/>
+                <animation name="idle">
+                    <frame tileid="16" duration="100"/>
+                </animation>
+                <animation name="hit">
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="17" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="18" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="17" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                    <frame tileid="18" duration="100"/>
+                    <frame tileid="16" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="locker" type="text/xml">
+            <actor version="0.2" name="locker" type="Locker" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="0" y="0" width="38" height="42"/>
+                <animation name="idle">
+                    <frame tileid="19" duration="100"/>
+                </animation>
+                <animation name="open">
+                    <frame tileid="36" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <script id="shelf" type="text/xml">
+            <actor version="0.2" name="shelf" type="ColliderMask" resource="#atlas" width="320" height="320" cols="10" rows="10">
+                <collider x="0" y="0" width="32" height="42"/>
+                <animation name="idle">
+                    <frame tileid="19" duration="100"/>
+                </animation>
+            </actor>
+        </script>
+        <div style="position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); max-width: 80%; text-align: center;">
+            <span style="color: #ddd">World's First</span><br>Pixelpunk Gamelet N<sup>o</sup>1/Collection#1
+        </div>
+        <canvas id="main"></canvas>
+        <script type="text/javascript">
+
+            // Phone test
+            function isPhone() {
+                const phone = /iPhone|iPod|Android/.test(navigator.userAgent);
+                const tablet = /iPad|Tablet|Xoom|Kindle/.test(navigator.userAgent);
+                return phone && !tablet;
+            }
+
+            const SCALE = isPhone() ? 2 : 4;
+
+            class ColliderMask extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+            }
+
+            class Barbell extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+                use(time) {
+                    this.duration = time;
+                    this.action = 'use';
+                }
+
+                update(args) {
+                    if (this.duration > 0) {
+                        this.duration -= args.deltaTime;
+                        this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.action = 'idle';
+                        this.animate(this.action, args.deltaTime);
+                    }
+                }
+
+            }
+
+            class PunchingBag extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+                hit(time) {
+                    this.duration = time;
+                    this.action = 'hit';
+                }
+
+                update(args) {
+                    if (this.duration > 0) {
+                        this.duration -= args.deltaTime;
+                        this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.action = 'idle';
+                        this.animate(this.action, args.deltaTime);
+                    }
+                }
+
+            }
+
+            class Locker extends Actor {
+
+                constructor(args) {
+                    super(args);
+                    this.idle();
+                }
+
+                open(time) {
+                    this.duration = time;
+                    this.action = 'open';
+                    this.animate(this.action, 0.01);
+                }
+
+                update(args) {
+                    if (this.duration > 0) {
+                        this.duration -= args.deltaTime;
+                        this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.action = 'idle';
+                        this.animate(this.action, args.deltaTime);
+                    }
+                }
+
+            }
+
+            class Bodybuilder extends MOB {
+
+                packingBarbell(time) {
+                    this.duration = time;
+                    this.action = 'packingBarbell';
+                }
+
+                packingDumbbells(time) {
+                    this.duration = time;
+                    this.action = 'packingDumbbells';
+                }
+
+                boxing(time) {
+                    this.duration = time;
+                    this.action = 'boxing';
+                    this.transform.x = 95 * SCALE;
+                    this.transform.y = 102 * SCALE;
+                }
+
+                openTheLocker() {
+                    this.duration = 2;
+                    this.action = 'idle';
+                    this.animate(this.action, 0.01);
+                }
+
+                update(args) {
+                    super.update(args);
+                    if (this.duration > 0) {
+                        if (!['idle', 'wander'].includes(this.action)) this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.wander();
+                    }
+                }
+            }
+
+            class Rat extends MOB {
+
+                packingDumbbells(time) {
+                    this.duration = time;
+                    this.action = 'packingDumbbells';
+                }
+
+                update(args) {
+                    super.update(args);
+                    this.lifetime -= args.deltaTime;
+                    if (this.duration > 0) {
+                        if (!['idle', 'wander'].includes(this.action)) this.animate(this.action, args.deltaTime);
+                    }
+                    else {
+                        this.wander();
+                    }
+                }
+
+            }
+
+            class Gamelet {
+
+                constructor() {
+
+                    this.paused = false;
+                    this.view = new View({ canvas: document.getElementById('main') });
+                    this.level = null;
+                    this.loader = {
+                        tsx: new LoaderTSX(),
+                        tmx: null,
+                        acx: new LoaderACX()
+                    };
+                    this.lastTime = 0;
+                    this.rat = null;
+                    this.ratex = document.getElementById('ratex-logo');
+                    this.meter = {
+                        value: 0,
+                        max: 100,
+                        fire: 0,
+                        pump: function(duration) {
+                            this.fire += duration;
+                        },
+                        inc: function(amount) {
+                            this.value += amount * 2;
+                            if (this.value > this.max) this.value = this.max;
+                        },
+                        dec: function(amount) {
+                            this.value -= amount * 2;
+                            if (this.value < 0.0) this.value = 0;
+                        },
+                        getNormalized: function() {
+                            return this.value / this.max;
+                        },
+                        update: function(deltaTime) {
+                            if (this.fire > 0) {
+                                this.fire -= deltaTime;
+                                this.inc(deltaTime);
+                            }
+                            else {
+                                this.dec(deltaTime);
+                            }
+                        },
+                    };
+                    this.view.canvas.addEventListener('click', event => {
+                        this.characterCollisions();
+                        this.ratCollisions();
+                    });
+                    window.addEventListener('blur', () => {
+                        this.pause();
+                    });
+                    window.addEventListener('focus', () => {
+                        this.start();
+                    });
+
+                }
+
+                // Load resources
+                async load() {
+                    const tileset = await this.loader.tsx.parseTileSet({
+                        xml: document.getElementById('tiles').innerText,
+                        resource: '#atlas',
+                        scale: SCALE
+                    });
+                    this.loader.tmx = new LoaderTMX({'tilesets': {'tiles': tileset}});
+                    this.level = await this.loader.tmx.parseLevel({
+                        xml: document.getElementById('map').innerText,
+                        scale: SCALE,
+                        prefetch: false
+                    });
+                    this.view.centre({x: 112 * SCALE, y: 112 * SCALE});
+                }
+
+                // Character collisions + reactions
+                characterCollisions() {
+                    if (this.level.actors.npc['character.1'].action == 'wander') {
+                        for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                            if (this.level.actors.npc['character.1'].collideWithSprite({with: otherObj, view: this.view})) {
+                                const duration = randomRangeInt(10, 20);
+                                switch(otherName.split('.')[0]) {
+                                    case 'barbell':
+                                        this.level.actors.npc['character.1'].packingBarbell(duration);
+                                        this.level.actors.obj['barbell.1'].use(duration);
+                                        this.meter.pump(duration);
+                                        return;
+                                        break;
+                                    case 'locker':
+                                        this.level.actors.npc['character.1'].openTheLocker(1);
+                                        this.level.actors.obj['locker.3'].open(1);
+                                        this.spawnRat();
+                                        return;
+                                        break;
+                                    case 'punchingbag':
+                                        this.level.actors.npc['character.1'].boxing(duration);
+                                        this.level.actors.obj['punchingbag.5'].hit(duration);
+                                        this.meter.pump(duration);
+                                        return;
+                                        break;
+                                    case 'shelf':
+                                        this.level.actors.npc['character.1'].packingDumbbells(duration);
+                                        this.meter.pump(duration);
+                                        return;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Rat collisions + reactions
+                ratCollisions() {
+                    if (this.rat && this.level.actors.npc['rat.2'].action == 'wander') {
+                        for (const [otherName, otherObj] of Object.entries(this.level.actors.obj)) {
+                            if (this.level.actors.npc['rat.2'].collideWithSprite({with: otherObj, view: this.view})) {
+                                const duration = randomRangeInt(10, 20);
+                                switch(otherName.split('.')[0]) {
+                                    case 'dumbbells':
+                                        this.level.actors.npc['rat.2'].packingDumbbells(duration);
+                                        return;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Spawn rat
+                spawnRat() {
+                    if (!this.rat) {
+                        this.rat = this.loader.acx.parseActor({
+                            xml: document.getElementById('rat').innerText,
+                            scale: SCALE
+                        });
+                        this.level.actors.npc['rat.2'] = this.rat;
+                        this.level.getLayer('characters').actors.push('rat.2');
+                        this.rat.position(55 * SCALE, 68 * SCALE);
+                        this.rat.idle();
+                        this.rat.lifetime = 60 * 5; // sec
+                    }
+                };
+
+                // Remove rat
+                removeRat() {
+                    const index = this.level.getLayer('characters').actors.indexOf('rat.2');
+                    if (index !== -1) this.level.getLayer('characters').actors.splice(index, 1);
+                    delete this.level.actors.npc['rat.2'];
+                    this.rat = null;
+                };
+
+                // Start loop
+                start() {
+                    this.paused = false;
+                    requestAnimationFrame((currentTime) => {
+                        this.lastTime = currentTime;
+                        this.mainLoop(currentTime);
+                    });
+                };
+
+                // Start loop
+                pause() {
+                    this.paused = true;
+                }
+
+                // Main loop
+                mainLoop(currentTime) {
+                    this.view.cls('#202728');
+                    // Universal frame time
+                    const deltaTime = (currentTime - this.lastTime) / 1000;
+                    // Rat lifetime
+                    if (this.rat && this.rat.lifetime <= 0) this.removeRat();
+                    // Update/Render level
+                    this.level.update(this.view, deltaTime);
+                    this.level.render(this.view);
+                    // this.level.debug(this.view);
+                    // Ratex coin
+                    this.meter.update(deltaTime);
+                    const width = isPhone() ? 32 : 16;
+                    const range = isPhone() ? 164 : 176;
+                    const pos = this.view.world2Screen({x: range * SCALE, y : range * SCALE});
+                    this.view.ctx.globalAlpha = this.meter.getNormalized();
+                    this.view.ctx.drawImage(this.ratex, pos.x, pos.y, width * SCALE, width * SCALE);
+                    this.view.ctx.globalAlpha = 1.0;
+                    // Time udpate
+                    this.lastTime = currentTime;
+                    // Next frame synchro
+                    if (!this.paused) requestAnimationFrame(this.mainLoop.bind(this));
+                }
+
+            }
+
+            // Init
+            window.addEventListener('load', () => {
+                const gamelet = new Gamelet();
+                gamelet.load().then(() => gamelet.start());
+            });
+        </script>
+    </body>
+
+</html>
