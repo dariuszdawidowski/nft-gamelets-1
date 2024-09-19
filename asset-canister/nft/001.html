@@ -491,12 +491,6 @@
                         this.characterCollisions();
                         this.ratCollisions();
                     });
-                    window.addEventListener('blur', () => {
-                        this.pause();
-                    });
-                    window.addEventListener('focus', () => {
-                        this.start();
-                    });
 
                 }
 
@@ -608,9 +602,10 @@
 
                 // Main loop
                 mainLoop(currentTime) {
+                    // Clear screen
                     this.view.cls('#202728');
                     // Universal frame time
-                    const deltaTime = (currentTime - this.lastTime) / 1000;
+                    const deltaTime = Math.min((currentTime - this.lastTime) / 1000, 0.01);
                     // Rat lifetime
                     if (this.rat && this.rat.lifetime <= 0) this.removeRat();
                     // Update/Render level
