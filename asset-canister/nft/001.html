@@ -605,7 +605,7 @@
                     // Clear screen
                     this.view.cls('#202728');
                     // Universal frame time
-                    const deltaTime = Math.min((currentTime - this.lastTime) / 1000, 0.01);
+                    const deltaTime = Math.min((currentTime - this.lastTime) / 1000, 0.1);
                     // Rat lifetime
                     if (this.rat && this.rat.lifetime <= 0) this.removeRat();
                     // Update/Render level

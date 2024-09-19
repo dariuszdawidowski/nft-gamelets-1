@@ -31,12 +31,23 @@
             }
 
         </style>
-        <script src="../asset-canister/jrpg-stellar-engine.js"></script>
+        <!-- <script src="../asset-canister/jrpg-stellar-engine.js"></script> -->
+        <script src="../../jrpg-stellar-engine/src/sprite.js"></script>
+        <script src="../../jrpg-stellar-engine/src/tileset.js"></script>
+        <script src="../../jrpg-stellar-engine/src/actor.js"></script>
+        <script src="../../jrpg-stellar-engine/src/mob.js"></script>
+        <script src="../../jrpg-stellar-engine/src/player.js"></script>
+        <script src="../../jrpg-stellar-engine/src/level.js"></script>
+        <script src="../../jrpg-stellar-engine/src/loader-acx.js"></script>
+        <script src="../../jrpg-stellar-engine/src/loader-tsx.js"></script>
+        <script src="../../jrpg-stellar-engine/src/loader-tmx.js"></script>
+        <script src="../../jrpg-stellar-engine/src/utils.js"></script>
+        <script src="../../jrpg-stellar-engine/src/view.js"></script>
     </head>
 
     <body>
         <div style="display: none;">
-            <img id="atlas" src="test.png">
+            <img id="atlas" src="013.png">
             <img id="ratex-logo" src="../asset-canister/Ratex-logo.png">
         </div>
         <script id="tiles" type="text/xml">
@@ -491,12 +502,13 @@
                         this.characterCollisions();
                         this.ratCollisions();
                     });
-                    window.addEventListener('blur', () => {
-                        this.pause();
-                    });
-                    window.addEventListener('focus', () => {
-                        this.start();
-                    });
+                    document.addEventListener('visibilitychange', this.windowVisibility.bind(this));
+                    // window.addEventListener('blur', () => {
+                    //     this.pause();
+                    // });
+                    // window.addEventListener('focus', () => {
+                    //     this.start();
+                    // });
 
                 }
 
@@ -594,23 +606,33 @@
 
                 // Start loop
                 start() {
+                    console.log('start');
                     this.paused = false;
-                    requestAnimationFrame((currentTime) => {
-                        this.lastTime = currentTime;
-                        this.mainLoop(currentTime);
-                    });
+                    this.spawnRat();
+                    this.lastTime = performance.now();
+                    console.log('this.lastTime', this.lastTime);
+                    requestAnimationFrame(this.mainLoop.bind(this));
+                    // requestAnimationFrame((currentTime) => {
+                    //     this.lastTime = currentTime;
+                    //     this.mainLoop(currentTime);
+                    // });
                 };
 
                 // Start loop
                 pause() {
+                    console.log('pause');
                     this.paused = true;
                 }
 
                 // Main loop
                 mainLoop(currentTime) {
+                    if (this.paused) return;
+                    // CLS
                     this.view.cls('#202728');
                     // Universal frame time
-                    const deltaTime = (currentTime - this.lastTime) / 1000;
+                    const deltaTime = Math.min(((currentTime - this.lastTime) / 1000), 0.02);
+                    this.lastTime = currentTime;
+                    if (deltaTime > 1) console.log(deltaTime)
                     // Rat lifetime
                     if (this.rat && this.rat.lifetime <= 0) this.removeRat();
                     // Update/Render level
@@ -622,13 +644,19 @@
                     const width = isPhone() ? 32 : 16;
                     const range = isPhone() ? 164 : 176;
                     const pos = this.view.world2Screen({x: range * SCALE, y : range * SCALE});
-                    this.view.ctx.globalAlpha = this.meter.getNormalized();
-                    this.view.ctx.drawImage(this.ratex, pos.x, pos.y, width * SCALE, width * SCALE);
-                    this.view.ctx.globalAlpha = 1.0;
-                    // Time udpate
-                    this.lastTime = currentTime;
+                    // this.view.ctx.globalAlpha = this.meter.getNormalized();
+                    // this.view.ctx.drawImage(this.ratex, pos.x, pos.y, width * SCALE, width * SCALE);
+                    // this.view.ctx.globalAlpha = 1.0;
                     // Next frame synchro
-                    if (!this.paused) requestAnimationFrame(this.mainLoop.bind(this));
+                    requestAnimationFrame(this.mainLoop.bind(this));
+                }
+
+                windowVisibility() {
+                    if (document.visibilityState === 'hidden') {
+                        // this.pause();
+                    } else if (document.visibilityState === 'visible') {
+                        // this.start();
+                    }                    
                 }
 
             }
