@@ -31,7 +31,7 @@ fi
 if [ $1 == "deploy" ] && [ $2 == "minter" ]; then
     echo "Installing Minter canister and initialize collection..."
 
-    dfx deploy minter --argument 'record {icrc7_args = null; icrc37_args =null; icrc3_args =null;}' --mode reinstall $3
+    dfx deploy minter --argument 'record {icrc7_args = null; icrc37_args = null; icrc3_args = null;}' --mode reinstall $3
     dfx canister call minter init $3
     dfx canister call minter icrc7_name --query $3
     
