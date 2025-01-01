@@ -38,7 +38,7 @@ if [ $1 == "deploy" ] && [ $2 == "minter" ]; then
 fi
 
 if [ $1 == "mint" ]; then
-    echo "Minting NFT id $2 html url $3 thumbnail url $4..."
+    echo "Minting NFT id=$2 experience=$3 thumbnail=$4..."
 
     dfx canister call minter icrcX_mint "(
       vec {
@@ -68,9 +68,9 @@ if [ $1 == "mint" ]; then
             created_at_time = null;
         };
       },
-    )" $4
+    )" $5
 
-    dfx canister call minter icrc7_total_supply --query $4
+    dfx canister call minter icrc7_total_supply --query $5
     
     exit 0
 fi
