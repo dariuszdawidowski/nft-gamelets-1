@@ -49,7 +49,7 @@ if [ $1 == "mint" ]; then
             metadata = variant {
                 Class = vec {
                     record {
-                         value = variant {
+                        value = variant {
                             Text = \"$3\"
                         };
                         name = \"icrc7:metadata:uri:image\";

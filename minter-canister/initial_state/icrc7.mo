@@ -7,7 +7,7 @@ module{
         name = ?"Pixelpunk Gamelets #1";
         description = ?"A Collection of interactive micro-game NFTs";
         logo = ?"https://4smx4-eqaaa-aaaap-ahxlq-cai.icp0.io/Collection-logo.png";
-        supply_cap = null;
+        supply_cap = ?21;
         allow_transfers = null;
         max_query_batch_size = ?100;
         max_update_batch_size = ?100;
