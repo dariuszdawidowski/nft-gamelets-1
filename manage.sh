@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # NFT Manage script
-# v0.4.1
 
 function help () {
     echo "Usage:"
     echo "  ./manage.sh <option> [param]"
     echo "  Options:"
     echo "    deploy <canister> [--ic] - deploy canister"
-    echo "    mint <nft id> <asset url> [--ic] - mint collection"
+    echo "    mint <nft id> <html url> <thumbnail url> [--ic] - mint collection"
     echo "    transfer <nft id> <to principal> [--ic] - transfer NFT to new owner"
     exit 0
 }
@@ -39,7 +38,7 @@ if [ $1 == "deploy" ] && [ $2 == "minter" ]; then
 fi
 
 if [ $1 == "mint" ]; then
-    echo "Minting NFT id $2 url $3..."
+    echo "Minting NFT id $2 html url $3 thumbnail url $4..."
 
     dfx canister call minter icrcX_mint "(
       vec {
@@ -50,9 +49,16 @@ if [ $1 == "mint" ]; then
                 Class = vec {
                     record {
                         value = variant {
+                            Text = \"$4\"
+                        };
+                        name = \"icrc7:metadata:uri:preview\";
+                        immutable = true;
+                    };
+                    record {
+                        value = variant {
                             Text = \"$3\"
                         };
-                        name = \"icrc7:metadata:uri:image\";
+                        name = \"icrc7:metadata:uri:experience\";
                         immutable = true;
                     };
                 }

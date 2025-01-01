@@ -1,15 +1,15 @@
 Pixelpunk NFT collection
 "Gamelets #1"
-v1.0.1
+v1.0.2
 
-Authors (c) 2024 
+Authors (c) 2024-2025
 Dariusz Dawidowski 
 Dariusz Gozdek
 
 Example (add --ic for the mainnet)
 ./manage.sh deploy assets
 ./manage.sh deploy minter
-./manage.sh mint 1 https://4smx4-eqaaa-aaaap-ahxlq-cai.icp0.io/nft/d490e01c-b2a9-48a8-a2b7-70a6ca2a1806.html
+./manage.sh mint <id: nat> <html: url> <thumbnail: url>
 
 Mainnet:
 https://4smx4-eqaaa-aaaap-ahxlq-cai.icp0.io/
