@@ -17,6 +17,8 @@ import ICRC7Default "./initial_state/icrc7";
 import ICRC37Default "./initial_state/icrc37";
 import ICRC3Default "./initial_state/icrc3";
 
+import ExperimentalCycles "mo:base/ExperimentalCycles"; // custom
+
 
 shared(_init_msg) actor class Example(_args : {
   icrc7_args: ?ICRC7.InitArgs;
@@ -504,6 +506,14 @@ shared(_init_msg) actor class Example(_args : {
       
     };
   };
-  
+
+  /////////
+  // Custom
+  /////////
+
+  public query func get_cycles() : async Nat {
+    return ExperimentalCycles.balance();
+  };
+
 
 };
