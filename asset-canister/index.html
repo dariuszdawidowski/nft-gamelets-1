@@ -60,6 +60,12 @@
                 margin-top: 18px;
             }
 
+            .nft button:not(:disabled):hover {
+                background-color: #555;
+                color: white;
+                cursor: pointer;
+            }
+
             .buttons {
                 display: flex;
                 justify-content: center;
@@ -88,7 +94,7 @@
             <img src="Pixelpunk-logo.png" style="width: 80%; margin-top: 25px;">
             <div style="font-size: 20px; letter-spacing: 2px; margin-bottom: 10px;">PIXELPUNK GAMELETS #1</div>
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">NFT COLLECTION</div>
-            <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">(limited edition of 21 unique items)</div>
+            <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">(limited edition of 21 unique handmade items)</div>
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 50px; width: 80%; text-align: center;">
                 Introducing an innovative NFT collection: the first NFTs fully on-chain as microgames.
                 This groundbreaking collection sets a new standard in the NFT world, featuring scenes from the Pixelpunk game, exclusively on the ICP blockchain.
@@ -101,7 +107,7 @@
                         <div class="badge">World's first NFT game</div>
                         <img src="nft/1-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>1</div>
-                        <button>BUY: 1000 ICP</button>
+                        <button data-nft-id="1" disabled>BUY: 50 ICP</button>
                     </div>
                 </a>
 
@@ -109,7 +115,7 @@
                     <div class="nft">
                         <img src="nft/2-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>2</div>
-                        <button>BUY: 100 ICP</button>
+                        <button data-nft-id="2" disabled>BUY: 15 ICP</button>
                     </div>
                 </a>
 
@@ -117,7 +123,7 @@
                     <div class="nft">
                         <img src="nft/3-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>3</div>
-                        <button>BUY: 50 ICP</button>
+                        <button data-nft-id="3" disabled>BUY: 14 ICP</button>
                     </div>
                 </a>
 
@@ -125,7 +131,7 @@
                     <div class="nft">
                         <img src="nft/4-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>4</div>
-                        <button>BUY: 25 ICP</button>
+                        <button data-nft-id="4" disabled>BUY: 13 ICP</button>
                     </div>
                 </a>
 
@@ -133,7 +139,7 @@
                     <div class="nft">
                         <img src="nft/5-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>5</div>
-                        <button>BUY: 20 ICP</button>
+                        <button data-nft-id="5" disabled>BUY: 12 ICP</button>
                     </div>
                 </a>
 
@@ -141,7 +147,7 @@
                     <div class="nft">
                         <img src="nft/6-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>6</div>
-                        <button>BUY: 15 ICP</button>
+                        <button data-nft-id="6" disabled>BUY: 11 ICP</button>
                     </div>
                 </a>
 
@@ -149,7 +155,7 @@
                     <div class="nft">
                         <img src="nft/7-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>7</div>
-                        <button>BUY: 10 ICP</button>
+                        <button data-nft-id="7" disabled>BUY: 10 ICP</button>
                     </div>
                 </a>
 
@@ -157,7 +163,7 @@
                     <div class="nft">
                         <img src="nft/8-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>8</div>
-                        <button>BUY: 10 ICP</button>
+                        <button data-nft-id="8" disabled>BUY: 9 ICP</button>
                     </div>
                 </a>
 
@@ -165,7 +171,7 @@
                     <div class="nft">
                         <img src="nft/9-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>9</div>
-                        <button>BUY: 10 ICP</button>
+                        <button data-nft-id="9" disabled>BUY: 8 ICP</button>
                     </div>
                 </a>
 
@@ -173,7 +179,7 @@
                     <div class="nft">
                         <img src="nft/10-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>10</div>
-                        <button>BUY: 10 ICP</button>
+                        <button data-nft-id="10" disabled>BUY: 7 ICP</button>
                     </div>
                 </a>
 
@@ -181,7 +187,7 @@
                     <div class="nft">
                         <img src="nft/11-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>11</div>
-                        <button>BUY: 5 ICP</button>
+                        <button data-nft-id="11" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -189,7 +195,7 @@
                     <div class="nft">
                         <img src="nft/12-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>12</div>
-                        <button>BUY: 5 ICP</button>
+                        <button data-nft-id="12" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -197,7 +203,7 @@
                     <div class="nft">
                         <img src="nft/13-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>13</div>
-                        <button>BUY: 4 ICP</button>
+                        <button data-nft-id="13" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -205,7 +211,7 @@
                     <div class="nft">
                         <img src="nft/14-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>14</div>
-                        <button>BUY: 3 ICP</button>
+                        <button data-nft-id="14" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -213,7 +219,7 @@
                     <div class="nft">
                         <img src="nft/15-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>15</div>
-                        <button>BUY: 2 ICP</button>
+                        <button data-nft-id="15" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -221,7 +227,7 @@
                     <div class="nft">
                         <img src="nft/16-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>16</div>
-                        <button>BUY: 1 ICP</button>
+                        <button data-nft-id="16" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -229,7 +235,7 @@
                     <div class="nft">
                         <img src="nft/17-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>17</div>
-                        <button>BUY: 1 ICP</button>
+                        <button data-nft-id="17" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -237,7 +243,7 @@
                     <div class="nft">
                         <img src="nft/18-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>18</div>
-                        <button>BUY: 1 ICP</button>
+                        <button data-nft-id="18" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -245,7 +251,7 @@
                     <div class="nft">
                         <img src="nft/19-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>19</div>
-                        <button>BUY: 1 ICP</button>
+                        <button data-nft-id="19" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -253,7 +259,7 @@
                     <div class="nft">
                         <img src="nft/20-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>20</div>
-                        <button>BUY: 1 ICP</button>
+                        <button data-nft-id="20" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -261,7 +267,7 @@
                     <div class="nft">
                         <img src="nft/21-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>21</div>
-                        <button>BUY: 0.5 ICP</button>
+                        <button data-nft-id="21" disabled>BUY: 6 ICP</button>
                     </div>
                 </a>
 
@@ -277,6 +283,20 @@
                 </div>
             <a href="https://internetcomputer.org/" target="_blank"><img src="ic-badge-powered-by-crypto_label-stripe-white-text.png"></a>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const nftButtons = document.querySelectorAll('.nft button');
+                nftButtons.forEach(button => {
+                    button.disabled = false;
+                    // OnClick
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const nftId = this.getAttribute('data-nft-id');
+                        console.log(`You clicked on NFT with ID: ${nftId}`);
+                    });
+                });
+            });
+        </script>
     </body>
 
 </html>
