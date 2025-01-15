@@ -320,7 +320,17 @@
             <a href="https://internetcomputer.org/" target="_blank"><img src="ic-badge-powered-by-crypto_label-stripe-white-text.png"></a>
         </div>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // Global settings (mainnet with Ratex)
+                // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
+                // const REPLICA_URL = null;
+                // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
+
+                // Global settings (localhost Mac)
+                const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
+                const REPLICA_URL = 'http://127.0.0.1:8080';
+                const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
                 // Connect button message
                 const connectButtonMsg = document.querySelector('.connect-wallet span');
@@ -345,7 +355,7 @@
                     // Not connected
                     else if (!wallet.connected) {
                         connectButtonMsg.innerText = 'Connecting...';
-                        wallet.connect({ traderCanisterId: 'be2us-64aaa-aaaaa-qaabq-cai' }); // localhost mac
+                        wallet.connect({ traderCanisterId: TRADER_CANISTER, host: REPLICA_URL });
                     }
                 });
 
@@ -364,7 +374,7 @@
                             console.log(`You are about to order NFT with ID: ${nftId}`);
                             button.disabled = true;
                             wallet.swap({
-                                tokenId: `by6od-j4aaa-aaaaa-qaadq-cai:${nftId}`,
+                                tokenId: `${NFT_COLLECTION_CANISTER}:${nftId}`,
                                 tokenType: 'ICRC-7',
                                 amount: 1,
                                 onOrder: () => {

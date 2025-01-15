@@ -34,16 +34,17 @@ class WalletPlug {
      * Connect
      */
 
-    async connect({ traderCanisterId }) {
+    async connect({ traderCanisterId, host = null } = {}) {
 
         if (this.installed) {
 
             // Connect to wallet
-            const key = await window.ic.plug.requestConnect({
+            const connectArgs = {
                 whitelist: [this.ICP_LEDGER, traderCanisterId],
-                host: 'http://127.0.0.1:8080', // TODO <- co z tym?
                 timeout: 50000
-            });
+            };
+            if (host) connectArgs.host = host;
+            const key = await window.ic.plug.requestConnect(connectArgs);
 
             // Swap trader actor
             this.actor.swap = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICPTrader, canisterId: traderCanisterId });

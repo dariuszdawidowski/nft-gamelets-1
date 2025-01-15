@@ -1,5 +1,5 @@
 ICP TRADER JavaScript interface
-v0.5.1
+v0.5.2
 
 Include scripts:
 ```html
@@ -29,16 +29,19 @@ Connect button:
 ```js
     document.getElementById('#button-connect').addEventListener('click' () => {
         wallet.connect({ traderCanisterId: '...' });
+        // Local replica address: wallet.connect({ traderCanisterId: '...', host: 'http://127.0.0.1:8080' });
     });
 ```
 
 Perform swap:
 ```js
     wallet.swap({
-        // id of the Token 'canisterID' or NFT 'collectionID:nftID' to buy
-        token: 'canisterID',
+        // Canister id of the Token 'canisterID' or NFT 'collectionID:nftID' to buy
+        tokenId: 'canisterID',
+        // Type of the token to buy 'ICRC-1' | 'ICRC-7'
+        tokenType: 'ICRC-1',
         // amount to buy
-        amount: 10_00000000,
+        amount: 10_0000_0000,
         onOrder: () => {
             console.log('Step #1: Requesting order');
         },
