@@ -1,6 +1,5 @@
 /**
  * Wallet Detector
- * v 0.2.1
  */
 
 function autodetectWallet(args) {

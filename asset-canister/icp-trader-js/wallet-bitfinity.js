@@ -1,6 +1,5 @@
 /**
  * Wallet Bitfinity
- * v 0.3.2
  */
 
 class WalletBitfinity {

@@ -1,6 +1,5 @@
 /**
  * Wallet Plug
- * v 0.5.0
  */
 
 class WalletPlug {
@@ -26,26 +25,29 @@ class WalletPlug {
         // Callbacks
         this.onConnect = ('onConnect' in args) ? args.onConnect : null;
 
+        // Ledger canister ID
+        this.ICP_LEDGER = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
+
     }
 
     /**
      * Connect
      */
 
-    async connect() {
+    async connect({ traderCanisterId }) {
 
         if (this.installed) {
 
             // Connect to wallet
             const key = await window.ic.plug.requestConnect({
-                whitelist: [ICP_LEDGER, RATEX_SWAP]
+                whitelist: [this.ICP_LEDGER, traderCanisterId]
             });
 
             // Swap trader actor
-            this.actor.swap = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICPTrader, canisterId: RATEX_SWAP });
+            this.actor.swap = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICPTrader, canisterId: traderCanisterId });
 
             // ICP ledger actor
-            this.actor.icpledger = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICPLedger, canisterId: ICP_LEDGER });
+            this.actor.icpledger = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICPLedger, canisterId: this.ICP_LEDGER });
 
             // Conected
             this.connected = true;
@@ -75,7 +77,8 @@ class WalletPlug {
 
     /**
      * Transfer to another wallet from connected account
-     * @param amount: <Number> - how much crypto
+     * @param token: <string> - id of the Token 'canisterID' or NFT 'collectionID:nftID'
+     * @param amount: <Number> - amount of assets to buy
      * @param onOrder: callback
      * @param onTransfer: callback
      * @param onClaim: callback
@@ -97,8 +100,8 @@ class WalletPlug {
             // 1. Place an order
             if (onOrder) onOrder();
             const order = await this.actor.swap.order({
-                tokenId: RATEX_TOKEN,
-                amount: BigInt(args.amount * (10 ** 8))
+                tokenId: token,
+                amount: args.amount
             });
             console.log('order', order);
 
@@ -106,7 +109,6 @@ class WalletPlug {
 
                 // 2. Send ICP to swap account
                 if (onTransfer) onTransfer();
-                const encoder = new TextEncoder();
                 let transfer = null;
                 try {
                     transfer = await this.actor.icpledger.transfer({
@@ -132,8 +134,8 @@ class WalletPlug {
                     // 3. Claim tokens
                     if (onClaim) onClaim();
                     const claim = await this.actor.swap.claim({
-                        tokenId: RATEX_TOKEN,
-                        amount: BigInt(args.amount * (10 ** 8)),
+                        tokenId: token,
+                        amount: args.amount,
                         memo: order.ok.orderId
                     });
                     console.log('claim', claim);
@@ -190,13 +192,17 @@ class WalletPlug {
 
 }
 
+/**
+ * Utils
+ */
+
 function hexToUint8Array(hex) {
-  if (hex.length % 2 !== 0) {
-      throw new Error('Invalid hex string length');
-  }
-  const bytes = new Uint8Array(hex.length / 2);
-  for (let i = 0; i < hex.length; i += 2) {
-      bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
-  }
-  return bytes;
+    if (hex.length % 2 !== 0) {
+        throw new Error('Invalid hex string length');
+    }
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+        bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+    }
+    return bytes;
 }
