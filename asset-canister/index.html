@@ -23,6 +23,30 @@
                 text-decoration: none;
             }
 
+            .connect-wallet {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 20px;
+                font-size: 16px;
+                letter-spacing: 2px;
+                width: 380px;
+                height: 33px;
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 25px;
+                transition: background-color 0.3s ease;
+            }
+
+            .connect-wallet:hover {
+                background-color: rgba(255, 255, 255, 0.6);
+                cursor: pointer;
+            }
+
+            .connect-wallet img {
+                width: 30px;
+                margin-left: 10px;
+            }
+
             .nft {
                display: flex;
                flex-direction: column;
@@ -58,6 +82,7 @@
 
             .nft button {
                 margin-top: 18px;
+                transition: background-color 0.3s ease;
             }
 
             .nft button:not(:disabled):hover {
@@ -102,6 +127,10 @@
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 50px; width: 80%; text-align: center;">
                 Introducing an innovative NFT collection: the first NFTs fully on-chain as microgames.
                 This groundbreaking collection sets a new standard in the NFT world, featuring scenes from the Pixelpunk game, exclusively on the ICP blockchain.
+            </div>
+
+            <div style="margin-bottom: 45px;">
+                <div class="connect-wallet"><span>Install Wallet to Buy</span><img src="plug-logo.png"></div>
             </div>
 
             <div style="display: flex; flex-wrap: wrap; justify-content: center;">
@@ -292,14 +321,48 @@
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+
+                // Connect button message
+                const connectButtonMsg = document.querySelector('.connect-wallet span');
+
+                // Wallet
+                const wallet = autodetectWallet({
+                    onInstalled: () => {
+                        connectButtonMsg.innerText = 'Connect Wallet to Buy';
+                    },
+                    onConnected: () => {
+                        connectButtonMsg.innerText = 'Wallet Connected';
+                    },
+                });
+
+                // On Connect Wallet click
+                document.querySelector('.connect-wallet').addEventListener('click', () => {
+                    // Not installed
+                    if (!wallet) {
+                        connectButtonMsg.innerText = 'Refresh page after install';
+                        window.open('https://www.plugwallet.ooo', '_blank');
+                    }
+                    // Not connected
+                    else if (!wallet.connected) {
+                        connectButtonMsg.innerText = 'Connecting...';
+                        wallet.connect({ traderCanisterId: 'be2us-64aaa-aaaaa-qaabq-cai' }); // localhost mac
+                    }
+                });
+
+                // NFT buttons
                 const nftButtons = document.querySelectorAll('.nft button');
                 nftButtons.forEach(button => {
                     button.disabled = false;
                     // OnClick
                     button.addEventListener('click', function(event) {
                         event.preventDefault();
-                        const nftId = this.getAttribute('data-nft-id');
-                        console.log(`You clicked on NFT with ID: ${nftId}`);
+                        if (!wallet.connected) {
+                            alert('Please connect your wallet first.');
+                        }
+                        else {
+                            const nftId = this.getAttribute('data-nft-id');
+                            console.log(`You clicked on NFT with ID: ${nftId}`);
+                        }
                     });
                 });
             });

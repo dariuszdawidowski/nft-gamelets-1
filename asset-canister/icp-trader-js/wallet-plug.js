@@ -22,8 +22,8 @@ class WalletPlug {
             swap: null,
         };
 
-        // Callbacks
-        this.onConnect = ('onConnect' in args) ? args.onConnect : null;
+        // Callback when successfully connected
+        this.onConnected = ('onConnected' in args) ? args.onConnected : null;
 
         // Ledger canister ID
         this.ICP_LEDGER = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
@@ -51,7 +51,7 @@ class WalletPlug {
 
             // Conected
             this.connected = true;
-            if (this.onConnect) this.onConnect();
+            if (this.onConnected) this.onConnected();
         }
 
     }

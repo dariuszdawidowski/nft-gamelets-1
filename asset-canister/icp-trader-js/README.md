@@ -12,14 +12,14 @@ Include scripts:
 
 Init:
 ```js
-    const wallet = = autodetectWallet({
+    const wallet = autodetectWallet({
         onNotInstalled: () => {
             console.log('Message encouraging the user to install the wallet');
         },
         onInstalled: () => {
             console.log('Message encouraging the user to connect the wallet');
         },
-        onConnect: () => {
+        onConnected: () => {
             console.log('Wallet is connected and ready to transactions');
         },
     });
