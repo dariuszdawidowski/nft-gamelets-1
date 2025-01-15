@@ -1,7 +1,10 @@
 const idlFactoryICPTrader = ({ IDL }) => {
-const ClaimArgs = IDL.Record({
-    'tokenId' : IDL.Text,
+  const ClaimArgs = IDL.Record({
+    'tokenTo' : IDL.Text,
     'memo' : IDL.Nat,
+    'typeTo' : IDL.Text,
+    'tokenFrom' : IDL.Text,
+    'typeFrom' : IDL.Text,
     'amount' : IDL.Nat,
   });
   const ClaimOk = IDL.Record({ 'orderId' : IDL.Nat });
@@ -12,7 +15,13 @@ const ClaimArgs = IDL.Record({
     'TransferNotFound' : IDL.Null,
   });
   const ClaimResult = IDL.Variant({ 'ok' : ClaimOk, 'err' : ClaimError });
-  const OrderArgs = IDL.Record({ 'tokenId' : IDL.Text, 'amount' : IDL.Nat });
+  const OrderArgs = IDL.Record({
+    'tokenTo' : IDL.Text,
+    'typeTo' : IDL.Text,
+    'tokenFrom' : IDL.Text,
+    'typeFrom' : IDL.Text,
+    'amount' : IDL.Nat,
+  });
   const OrderOk = IDL.Record({
     'accountId' : IDL.Text,
     'cost' : IDL.Nat,
@@ -28,6 +37,7 @@ const ClaimArgs = IDL.Record({
   return IDL.Service({
     'admin_payoff' : IDL.Func([], [IDL.Nat], []),
     'claim' : IDL.Func([ClaimArgs], [ClaimResult], []),
+    'get_cycles' : IDL.Func([], [IDL.Nat], ['query']),
     'order' : IDL.Func([OrderArgs], [OrderResult], []),
   });
 };

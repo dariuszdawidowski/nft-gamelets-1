@@ -354,14 +354,41 @@
                 nftButtons.forEach(button => {
                     button.disabled = false;
                     // OnClick
-                    button.addEventListener('click', function(event) {
+                    button.addEventListener('click', (event) => {
                         event.preventDefault();
-                        if (!wallet.connected) {
+                        if (!wallet || !wallet.connected) {
                             alert('Please connect your wallet first.');
                         }
                         else {
-                            const nftId = this.getAttribute('data-nft-id');
-                            console.log(`You clicked on NFT with ID: ${nftId}`);
+                            const nftId = button.getAttribute('data-nft-id');
+                            console.log(`You are about to order NFT with ID: ${nftId}`);
+                            button.disabled = true;
+                            wallet.swap({
+                                tokenId: `by6od-j4aaa-aaaaa-qaadq-cai:${nftId}`,
+                                tokenType: 'ICRC-7',
+                                amount: 1,
+                                onOrder: () => {
+                                    console.log('Step #1: Requesting order');
+                                    button.innerText = 'Ordering...';
+                                },
+                                onTransfer: () => {
+                                    console.log('Step #2: Transfering ICP');
+                                    button.innerText = 'Paying...';
+                                },
+                                onClaim: () => {
+                                    console.log('Step #3: Claiming bought assets');
+                                    button.innerText = 'Claiming...';
+                                },
+                                onFinish: () => {
+                                    console.log('Success');
+                                    button.innerText = 'SOLD';
+                                },
+                                onFail: () => {
+                                    console.log('Failed');
+                                    button.innerText = 'Error';
+                                    button.disabled = false;
+                                },
+                            });
                         }
                     });
                 });

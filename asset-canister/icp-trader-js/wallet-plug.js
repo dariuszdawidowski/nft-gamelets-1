@@ -40,7 +40,9 @@ class WalletPlug {
 
             // Connect to wallet
             const key = await window.ic.plug.requestConnect({
-                whitelist: [this.ICP_LEDGER, traderCanisterId]
+                whitelist: [this.ICP_LEDGER, traderCanisterId],
+                host: 'http://127.0.0.1:8080', // TODO <- co z tym?
+                timeout: 50000
             });
 
             // Swap trader actor
@@ -77,7 +79,8 @@ class WalletPlug {
 
     /**
      * Transfer to another wallet from connected account
-     * @param token: <string> - id of the Token 'canisterID' or NFT 'collectionID:nftID'
+     * @param tokenId: <string> - id of the Token 'canisterID' or NFT 'collectionID:nftID'
+     * @param tokenType: <string> - 'ICRC-1' or 'ICRC-7'
      * @param amount: <Number> - amount of assets to buy
      * @param onOrder: callback
      * @param onTransfer: callback
@@ -100,7 +103,10 @@ class WalletPlug {
             // 1. Place an order
             if (onOrder) onOrder();
             const order = await this.actor.swap.order({
-                tokenId: token,
+                tokenFrom: this.ICP_LEDGER,
+                typeFrom: 'ICRC-1',
+                tokenTo: args.tokenId,
+                typeTo: args.tokenType,
                 amount: args.amount
             });
             console.log('order', order);
@@ -134,7 +140,10 @@ class WalletPlug {
                     // 3. Claim tokens
                     if (onClaim) onClaim();
                     const claim = await this.actor.swap.claim({
-                        tokenId: token,
+                        tokenFrom: this.ICP_LEDGER,
+                        typeFrom: 'ICRC-1',
+                        tokenTo: args.tokenId,
+                        typeTo: args.tokenType,
                         amount: args.amount,
                         memo: order.ok.orderId
                     });
