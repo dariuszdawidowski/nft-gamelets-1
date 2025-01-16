@@ -113,9 +113,12 @@
             }
 
         </style>
+        <script src="bubble.js"></script>
         <script src="icp-trader-js/autodetect.js"></script>
         <script src="icp-trader-js/icp-ledger.did.js"></script>
         <script src="icp-trader-js/icp-trader.did.js"></script>
+        <script src="icp-trader-js/wallet.js"></script>
+        <script src="icp-trader-js/wallet-bitfinity.js"></script>
         <script src="icp-trader-js/wallet-plug.js"></script>
     </head>
 
@@ -336,15 +339,19 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
+                // Bubble creation
+                const bubble = new Bubble();
+                bubble.counter('Ordering NFT ({{sec}}s)...', 14);
+
                 // Global settings (mainnet with Ratex)
-                const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
-                const REPLICA_URL = null;
-                const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
+                // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
+                // const REPLICA_URL = null;
+                // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
 
                 // Global settings (localhost Mac)
-                // const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
-                // const REPLICA_URL = 'http://127.0.0.1:8080';
-                // const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
+                const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
+                const REPLICA_URL = 'http://127.0.0.1:8080';
+                const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
                 // Connect button message
                 const connectButtonMsg = document.querySelector('.connect-wallet span');
@@ -394,23 +401,28 @@
                                 onOrder: () => {
                                     console.log('Step #1: Requesting order');
                                     button.innerText = 'Ordering...';
+                                    bubble.counter('Ordering NFT ({{sec}}s)...', 4);
                                 },
                                 onTransfer: () => {
                                     console.log('Step #2: Transfering ICP');
                                     button.innerText = 'Paying...';
+                                    bubble.counter('Paying ICP ({{sec}}s)...', 5);
                                 },
                                 onClaim: () => {
                                     console.log('Step #3: Claiming bought assets');
                                     button.innerText = 'Claiming...';
+                                    bubble.counter('Claiming NFT ({{sec}}s)...', 3);
                                 },
                                 onFinish: () => {
                                     console.log('Success');
                                     button.innerText = 'SOLD';
+                                    bubble.hide();
                                 },
                                 onFail: () => {
                                     console.log('Failed');
                                     button.innerText = 'Error';
                                     button.disabled = false;
+                                    bubble.hide();
                                 },
                             });
                         }
