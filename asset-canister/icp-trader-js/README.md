@@ -1,12 +1,13 @@
 ICP TRADER JavaScript interface
-v0.5.2
+v0.6.0
 
 Include scripts:
 ```html
     <script src="icp-trader-js/autodetect.js"></script>
     <script src="icp-trader-js/icp-ledger.did.js"></script>
     <script src="icp-trader-js/icp-trader.did.js"></script>
-    <!--script src="icp-trader-js/wallet-bitfinity.js"></script--> TODO
+    <script src="icp-trader-js/wallet.js"></script>
+    <script src="icp-trader-js/wallet-bitfinity.js"></script>
     <script src="icp-trader-js/wallet-plug.js"></script>
 ```
 
