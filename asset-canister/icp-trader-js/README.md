@@ -1,5 +1,5 @@
 ICP TRADER JavaScript interface
-v0.6.0
+v0.6.1
 
 Include scripts:
 ```html
@@ -19,18 +19,23 @@ Init:
         },
         onInstalled: () => {
             console.log('Message encouraging the user to connect the wallet');
-        },
-        onConnected: () => {
-            console.log('Wallet is connected and ready to transactions');
-        },
+        }
     });
 ```
 
 Connect button:
 ```js
     document.getElementById('#button-connect').addEventListener('click' () => {
-        wallet.connect({ traderCanisterId: '...' });
-        // Local replica address: wallet.connect({ traderCanisterId: '...', host: 'http://127.0.0.1:8080' });
+        wallet.connect({
+            traderCanisterId: '...',
+            host: 'http://127.0.0.1:8080', // replica address for local development (null for mainnet)
+            onConnected: () => {
+                console.log('Wallet is connected and ready to transactions');
+            },
+            onFail: () => {
+                console.log('Connection to wallet failed');
+            }
+        });
     });
 ```
 

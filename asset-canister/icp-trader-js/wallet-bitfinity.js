@@ -8,15 +8,15 @@ class WalletBitfinity extends Wallet {
      * Constructor
      */
 
-    constructor(args = {}) {
-        super({ ...args, installed: window?.ic?.infinityWallet });
+    constructor() {
+        super({ installed: window?.ic?.infinityWallet });
     }
 
     /**
      * Connect
      */
 
-    async connect({ traderCanisterId, host = null } = {}) {
+    async connect({ traderCanisterId, host = null, onConnected, onFail } = {}) {
 
         if (this.installed) {
 
@@ -25,14 +25,17 @@ class WalletBitfinity extends Wallet {
                 whitelist: [this.ICP_LEDGER, traderCanisterId],
                 timeout: 50000
             };
+            let key = null;
             try {
-                const key = await window.ic.infinityWallet.requestConnect(connectArgs);
+                key = await window.ic.infinityWallet.requestConnect(connectArgs);
             }
             catch (e) {
                 console.error(e);
+                if (onFail) onFail(e);
             }
 
             if (key) {
+
                 // Swap trader actor
                 this.actor.swap = await window.ic.infinityWallet.createActor({ interfaceFactory: idlFactoryICPTrader, canisterId: traderCanisterId, host });
 
@@ -41,7 +44,7 @@ class WalletBitfinity extends Wallet {
 
                 // Conected
                 this.connected = true;
-                if (this.onConnected) this.onConnected();
+                if (onConnected) onConnected('bitfinity');
             }
         }
 

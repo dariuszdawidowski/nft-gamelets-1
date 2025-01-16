@@ -11,7 +11,7 @@ class Wallet {
     constructor(args = {}) {
 
         // Is installed?
-        this.installed = window?.ic?.infinityWallet;
+        this.installed = args.installed;
 
         // Is Connected?
         this.connected = false;

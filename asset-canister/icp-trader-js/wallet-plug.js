@@ -8,15 +8,15 @@ class WalletPlug extends Wallet {
      * Constructor
      */
 
-    constructor(args = {}) {
-        super({ ...args, installed: window?.ic?.plug });
+    constructor() {
+        super({ installed: window?.ic?.plug });
     }
 
     /**
      * Connect
      */
 
-    async connect({ traderCanisterId, host = null } = {}) {
+    async connect({ traderCanisterId, host = null, onConnected, onFail } = {}) {
 
         if (this.installed) {
 
@@ -26,11 +26,13 @@ class WalletPlug extends Wallet {
                 timeout: 50000
             };
             if (host) connectArgs.host = host;
+            let key = null;
             try {
-                const key = await window.ic.plug.requestConnect(connectArgs);
+                key = await window.ic.plug.requestConnect(connectArgs);
             }
             catch (e) {
                 console.error(e);
+                if (onFail) onFail(e);
             }
 
             if (key) {
@@ -42,7 +44,7 @@ class WalletPlug extends Wallet {
 
                 // Conected
                 this.connected = true;
-                if (this.onConnected) this.onConnected();
+                if (onConnected) onConnected('plug');
             }
         }
 

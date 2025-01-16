@@ -140,8 +140,8 @@
             <div style="margin-bottom: 45px;">
                 <div class="connect-wallet">
                     <span>Install Wallet to Buy</span>
-                    <img src="bitfinity-logo.svg">
-                    <img src="plug-logo.png">
+                    <img id="bitfinity-logo" src="bitfinity-logo.svg">
+                    <img id="plug-logo" src="plug-logo.png">
                 </div>
             </div>
 
@@ -350,12 +350,12 @@
                 // Bubble creation
                 const bubble = new Bubble();
 
-                // Global settings (mainnet with Ratex)
+                // Settings (mainnet with Ratex)
                 // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
                 // const REPLICA_URL = null;
                 // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
 
-                // Global settings (localhost Mac)
+                // Settings (localhost Mac)
                 const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
                 const REPLICA_URL = 'http://127.0.0.1:8080';
                 const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
@@ -367,24 +367,36 @@
                 const wallet = autodetectWallet({
                     onInstalled: () => {
                         connectButtonMsg.innerText = 'Connect Wallet to Buy';
-                    },
-                    onConnected: () => {
-                        connectButtonMsg.innerText = 'Wallet Connected';
-                    },
+                    }
                 });
 
                 // On Connect Wallet click
                 document.querySelector('.connect-wallet').addEventListener('click', () => {
+
                     // Not installed
                     if (!wallet) {
                         connectButtonMsg.innerText = 'Refresh page after install';
                         window.open('https://www.plugwallet.ooo', '_blank');
                     }
+
                     // Not connected
                     else if (!wallet.connected) {
                         connectButtonMsg.innerText = 'Connecting...';
-                        wallet.connect({ traderCanisterId: TRADER_CANISTER, host: REPLICA_URL });
+                        wallet.connect({
+                            traderCanisterId: TRADER_CANISTER,
+                            host: REPLICA_URL,
+                            onConnected: (which) => {
+                                connectButtonMsg.innerText = 'Wallet Connected';
+                                document.querySelectorAll('.connect-wallet img').forEach(element => element.style.display = 'none');
+                                document.querySelector(`.connect-wallet img#${which}-logo`).style.display = 'block';
+                            },
+                            onFail: (err) => {
+                                alert(err);
+                                connectButtonMsg.innerText = 'Connect Wallet to Buy';
+                            }
+                        });
                     }
+
                 });
 
                 // NFT buttons
