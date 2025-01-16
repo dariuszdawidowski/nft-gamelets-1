@@ -147,15 +147,18 @@
 
             <div style="margin-bottom: 45px; border: 1px solid #ccc; padding: 10px; width: 80%; text-align: center;">
                 <div>How to buy:</div>
-                <div>1. Install the <a href="https://www.plugwallet.ooo" target="_blank">Plug Wallet</a> browser extension.</div>
-                <div>2. Connect your wallet to the Internet Computer clicking big button above.</div>
+                <div>1. Install the <a href="https://www.plugwallet.ooo" target="_blank">Plug Wallet</a> or <a href="https://wallet.bitfinity.network" target="_blank">Bitfinity Wallet</a> extension.</div>
+                <div>2. Connect your wallet to this website clicking big button above.</div>
                 <div>3. Click on the BUY button of the NFT you want to purchase.</div>
-                <div>4. Confirm the transaction in the Plug Wallet.</div>
+                <div>4. Confirm the transaction in the wallet<br>
+                    &rarr; Please note that sometimes a popup appears under the browser window !</div>
                 <div>5. Wait for the transaction to be processed.</div>
                 <div>6. Enjoy your new NFT!</div>
-                <div>7. You can verify ownership rights on <a href="https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=57cts-lyaaa-aaaap-ahxma-cai" target="_blank">Collection Canister candid interface</a> using icrc7_owner_of method and providing NFT id number.</div>
+                <div>7. You can verify ownership rights on <a href="https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=57cts-lyaaa-aaaap-ahxma-cai" target="_blank">Canister candid interface</a><br>
+                    using icrc7_owner_of method and providing NFT id number.</div>
                 <div style="color: #e57373; margin-top: 20px;">WARNING! </div>
-                <div style="color: #e57373;">These NFTs are in the latest ICRC-37 format and will not display in any wallet as none currently support this format. A new version of <a href="https://grindwallet.com" target="_blank">Grind Wallet</a> supporting this format will be available soon.</div>
+                <div style="color: #e57373;">These NFTs are in the latest ICRC-37 format and will not display in any wallet as none currently support this format.<br>
+                    A new version of <a href="https://grindwallet.com" target="_blank">Grind Wallet</a> supporting this format will be available soon.</div>
             </div>
 
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px;">
@@ -351,14 +354,14 @@
                 const bubble = new Bubble();
 
                 // Settings (mainnet with Ratex)
-                // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
-                // const REPLICA_URL = null;
-                // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
+                const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
+                const REPLICA_URL = null;
+                const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
 
                 // Settings (localhost Mac)
-                const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
-                const REPLICA_URL = 'http://127.0.0.1:8080';
-                const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
+                // const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
+                // const REPLICA_URL = 'http://127.0.0.1:8080';
+                // const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
                 // Connect button message
                 const connectButtonMsg = document.querySelector('.connect-wallet span');
