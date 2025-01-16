@@ -31,7 +31,7 @@
                 padding: 10px 20px;
                 font-size: 16px;
                 letter-spacing: 2px;
-                width: 380px;
+                width: 400px;
                 height: 33px;
                 background-color: rgba(255, 255, 255, 0.2);
                 border-radius: 25px;
@@ -41,6 +41,10 @@
             .connect-wallet:hover {
                 background-color: rgba(255, 255, 255, 0.6);
                 cursor: pointer;
+            }
+
+            .connect-wallet span {
+                margin-right: 10px;
             }
 
             .connect-wallet img {
@@ -134,7 +138,11 @@
             </div>
 
             <div style="margin-bottom: 45px;">
-                <div class="connect-wallet"><span>Install Wallet to Buy</span><img src="plug-logo.png"></div>
+                <div class="connect-wallet">
+                    <span>Install Wallet to Buy</span>
+                    <img src="bitfinity-logo.svg">
+                    <img src="plug-logo.png">
+                </div>
             </div>
 
             <div style="margin-bottom: 45px; border: 1px solid #ccc; padding: 10px; width: 80%; text-align: center;">
@@ -341,7 +349,6 @@
 
                 // Bubble creation
                 const bubble = new Bubble();
-                bubble.counter('Ordering NFT ({{sec}}s)...', 14);
 
                 // Global settings (mainnet with Ratex)
                 // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
