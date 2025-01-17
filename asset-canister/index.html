@@ -129,6 +129,9 @@
     <body>
         <div style="display: flex; align-items: center; justify-content: flex-start; flex-direction: column; width: 100%; height: 100%;">
             <img src="Pixelpunk-logo.png" style="width: 80%; margin-top: 25px;">
+            <div style="width: 600px; text-align: center; margin-bottom: 20px;">
+                This site uses COOKIES to ensure proper functionality. By continuing to browse the site, you agree to our use of cookies. We do not analyze your browsing activity.
+            </div>
             <div style="font-size: 20px; letter-spacing: 2px; margin-bottom: 10px;">PIXELPUNK GAMELETS #1</div>
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">NFT COLLECTION</div>
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">(limited edition of 21 unique handmade items)</div>
@@ -256,7 +259,7 @@
                     <div class="nft">
                         <img src="nft/12-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>12</div>
-                        <button data-nft-id="12" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="12" disabled>BUY: 5 ICP</button>
                     </div>
                 </a>
 
@@ -264,7 +267,7 @@
                     <div class="nft">
                         <img src="nft/13-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>13</div>
-                        <button data-nft-id="13" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="13" disabled>BUY: 4 ICP</button>
                     </div>
                 </a>
 
@@ -272,7 +275,7 @@
                     <div class="nft">
                         <img src="nft/14-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>14</div>
-                        <button data-nft-id="14" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="14" disabled>BUY: 3 ICP</button>
                     </div>
                 </a>
 
@@ -280,7 +283,7 @@
                     <div class="nft">
                         <img src="nft/15-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>15</div>
-                        <button data-nft-id="15" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="15" disabled>BUY: 2 ICP</button>
                     </div>
                 </a>
 
@@ -288,7 +291,7 @@
                     <div class="nft">
                         <img src="nft/16-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>16</div>
-                        <button data-nft-id="16" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="16" disabled>BUY: 2 ICP</button>
                     </div>
                 </a>
 
@@ -296,7 +299,7 @@
                     <div class="nft">
                         <img src="nft/17-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>17</div>
-                        <button data-nft-id="17" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="17" disabled>BUY: 2 ICP</button>
                     </div>
                 </a>
 
@@ -304,7 +307,7 @@
                     <div class="nft">
                         <img src="nft/18-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>18</div>
-                        <button data-nft-id="18" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="18" data-sold="true" disabled><s>SOLD: 1 ICP</s></button>
                     </div>
                 </a>
 
@@ -312,7 +315,7 @@
                     <div class="nft">
                         <img src="nft/19-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>19</div>
-                        <button data-nft-id="19" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="19" disabled>BUY: 1 ICP</button>
                     </div>
                 </a>
 
@@ -320,7 +323,7 @@
                     <div class="nft">
                         <img src="nft/20-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>20</div>
-                        <button data-nft-id="20" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="20" disabled>BUY: 1 ICP</button>
                     </div>
                 </a>
 
@@ -328,7 +331,7 @@
                     <div class="nft">
                         <img src="nft/21-thumb.png">
                         <div class="title">Pixelpunk Gamelet N<sup>o</sup>21</div>
-                        <button data-nft-id="21" disabled>BUY: 6 ICP</button>
+                        <button data-nft-id="21" disabled>BUY: 1 ICP</button>
                     </div>
                 </a>
 
@@ -340,9 +343,6 @@
                     <a href="https://x.com/PixelpunkZone" target="_blank">Twitter</a>
                     <a href="https://discord.gg/A2ytm2EvtA" target="_blank">Discord</a>
                     <a href="https://www.patreon.com/PixelpunkZone" target="_blank">Patreon</a>
-                </div>
-                <div>
-                    Site does NOT use cookies.
                 </div>
             </div>
             <a href="https://internetcomputer.org/" target="_blank"><img src="ic-badge-powered-by-crypto_label-stripe-white-text.png"></a>
@@ -405,50 +405,53 @@
                 // NFT buttons
                 const nftButtons = document.querySelectorAll('.nft button');
                 nftButtons.forEach(button => {
-                    button.disabled = false;
-                    // OnClick
-                    button.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        if (!wallet || !wallet.connected) {
-                            alert('Please connect your wallet first.');
-                        }
-                        else {
-                            const nftId = button.getAttribute('data-nft-id');
-                            console.log(`You are about to order NFT with ID: ${nftId}`);
-                            button.disabled = true;
-                            wallet.swap({
-                                tokenId: `${NFT_COLLECTION_CANISTER}:${nftId}`,
-                                tokenType: 'ICRC-7',
-                                amount: 1,
-                                onOrder: () => {
-                                    console.log('Step #1: Requesting order');
-                                    button.innerText = 'Ordering...';
-                                    bubble.counter('Ordering NFT ({{sec}}s)...', 4);
-                                },
-                                onTransfer: () => {
-                                    console.log('Step #2: Transfering ICP');
-                                    button.innerText = 'Paying...';
-                                    bubble.counter('Paying ICP ({{sec}}s)...', 5);
-                                },
-                                onClaim: () => {
-                                    console.log('Step #3: Claiming bought assets');
-                                    button.innerText = 'Claiming...';
-                                    bubble.counter('Claiming NFT ({{sec}}s)...', 3);
-                                },
-                                onFinish: () => {
-                                    console.log('Success');
-                                    button.innerText = 'SOLD';
-                                    bubble.hide();
-                                },
-                                onFail: () => {
-                                    console.log('Failed');
-                                    button.innerText = 'Error';
-                                    button.disabled = false;
-                                    bubble.hide();
-                                },
-                            });
-                        }
-                    });
+                    // Not sold
+                    if (button.getAttribute('data-sold') !== 'true') {
+                        button.disabled = false;
+                        // OnClick
+                        button.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            if (!wallet || !wallet.connected) {
+                                alert('Please connect your wallet first.');
+                            }
+                            else {
+                                const nftId = button.getAttribute('data-nft-id');
+                                console.log(`You are about to order NFT with ID: ${nftId}`);
+                                button.disabled = true;
+                                wallet.swap({
+                                    tokenId: `${NFT_COLLECTION_CANISTER}:${nftId}`,
+                                    tokenType: 'ICRC-7',
+                                    amount: 1,
+                                    onOrder: () => {
+                                        console.log('Step #1: Requesting order');
+                                        button.innerText = 'Ordering...';
+                                        bubble.counter('Ordering NFT ({{sec}}s)...', 4);
+                                    },
+                                    onTransfer: () => {
+                                        console.log('Step #2: Transfering ICP');
+                                        button.innerText = 'Paying...';
+                                        bubble.counter('Paying ICP ({{sec}}s)...', 5);
+                                    },
+                                    onClaim: () => {
+                                        console.log('Step #3: Claiming bought assets');
+                                        button.innerText = 'Claiming...';
+                                        bubble.counter('Claiming NFT ({{sec}}s)...', 3);
+                                    },
+                                    onFinish: () => {
+                                        console.log('Success');
+                                        button.innerText = 'SOLD';
+                                        bubble.hide();
+                                    },
+                                    onFail: () => {
+                                        console.log('Failed');
+                                        button.innerText = 'Error';
+                                        button.disabled = false;
+                                        bubble.hide();
+                                    },
+                                });
+                            }
+                        });
+                    }
                 });
             });
         </script>
