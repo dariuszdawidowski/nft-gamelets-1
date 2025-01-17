@@ -7,8 +7,9 @@ function help () {
     echo "  ./manage.sh <option> [param]"
     echo "  Options:"
     echo "    deploy <canister> [--ic] - deploy canister"
-    echo "    mint <nft id> <html url> <thumbnail url> [--ic] - mint collection"
+    echo "    mint <nft id> <html url> <thumbnail url> [--ic] - mint NFT"
     echo "    transfer <nft id> <to principal> [--ic] - transfer NFT to new owner"
+    echo "    batch [--ic] - mint all collection and transfer to trader"
     exit 0
 }
 
@@ -87,6 +88,30 @@ if [ $1 == "transfer" ]; then
         created_at_time = null;}})" $4
 
     dfx canister call minter icrc7_owner_of "(vec {$2})" --query $4
+
+    exit 0
+fi
+
+if [ $1 == "batch" ]; then
+    echo "Batching all mint & transfer to trader..."
+
+    if [ "$2" == "--ic" ]; then
+        for i in {1..21}
+        do
+            echo "Minting NFT $i @ IC"
+            ./manage.sh mint $i https://4smx4-eqaaa-aaaap-ahxlq-cai.icp0.io/nft/$i.html https://4smx4-eqaaa-aaaap-ahxlq-cai.icp0.io/nft/$i-thumb.png --ic
+            echo "Transferring NFT $i to trader @ IC"
+            ./manage.sh transfer $i 2f7hj-diaaa-aaaah-qpxia-cai --ic
+        done
+    else
+        for i in {1..21}
+        do
+            echo "Minting NFT $i"
+            ./manage.sh mint $i http://bw4dl-smaaa-aaaaa-qaacq-cai.localhost:8080/nft/$i.html http://bw4dl-smaaa-aaaaa-qaacq-cai.localhost:8080/nft/$i-thumb.png
+            echo "Transferring NFT $i to trader"
+            ./manage.sh transfer $i be2us-64aaa-aaaaa-qaabq-cai
+        done
+    fi
 
     exit 0
 fi
