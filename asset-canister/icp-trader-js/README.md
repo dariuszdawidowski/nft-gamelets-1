@@ -1,11 +1,12 @@
 ICP TRADER JavaScript interface
-v0.6.1
+v0.6.2
 
 Include scripts:
 ```html
     <script src="icp-trader-js/autodetect.js"></script>
     <script src="icp-trader-js/icp-ledger.did.js"></script>
     <script src="icp-trader-js/icp-trader.did.js"></script>
+    <script src="icp-trader-js/icrc37-ledger.did.js"></script> <!-- for NFT internal wallet -->
     <script src="icp-trader-js/wallet.js"></script>
     <script src="icp-trader-js/wallet-bitfinity.js"></script>
     <script src="icp-trader-js/wallet-plug.js"></script>
@@ -26,7 +27,7 @@ Init:
 Connect button:
 ```js
     document.getElementById('#button-connect').addEventListener('click' () => {
-        wallet.connect({
+        await wallet.connect({
             traderCanisterId: '...',
             host: 'http://127.0.0.1:8080', // replica address for local development (null for mainnet)
             onConnected: () => {
@@ -39,9 +40,14 @@ Connect button:
     });
 ```
 
+Fetch NFTs info:
+```js
+    await wallet.infoNFTs({ owned: true });
+```
+
 Perform swap:
 ```js
-    wallet.swap({
+    await wallet.swap({
         // Canister id of the Token 'canisterID' or NFT 'collectionID:nftID' to buy
         tokenId: 'canisterID',
         // Type of the token to buy 'ICRC-1' | 'ICRC-7'

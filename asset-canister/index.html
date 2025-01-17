@@ -52,6 +52,28 @@
                 margin-left: 10px;
             }
 
+            .internal-wallet {
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 20px;
+                font-size: 16px;
+                letter-spacing: 2px;
+                width: 600px;
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 25px;
+                transition: background-color 0.3s ease;
+            }
+
+            .internal-wallet .internal-nft {
+                text-align: center;
+            }
+
+            .internal-wallet .internal-nft img {
+                width: 64px;
+                height: 64px;
+            }
+
             .nft {
                display: flex;
                flex-direction: column;
@@ -121,6 +143,7 @@
         <script src="icp-trader-js/autodetect.js"></script>
         <script src="icp-trader-js/icp-ledger.did.js"></script>
         <script src="icp-trader-js/icp-trader.did.js"></script>
+        <script src="icp-trader-js/icrc37-ledger.did.js"></script>
         <script src="icp-trader-js/wallet.js"></script>
         <script src="icp-trader-js/wallet-bitfinity.js"></script>
         <script src="icp-trader-js/wallet-plug.js"></script>
@@ -140,12 +163,25 @@
                 This groundbreaking collection sets a new standard in the NFT world, featuring scenes from the Pixelpunk game, exclusively on the ICP blockchain.
             </div>
 
-            <div style="margin-bottom: 45px;">
+            <div style="display: flex; margin-bottom: 45px; flex-direction: column; align-items: center;">
+
                 <div class="connect-wallet">
                     <span>Install Wallet to Buy</span>
                     <img id="bitfinity-logo" src="bitfinity-logo.svg">
                     <img id="plug-logo" src="plug-logo.png">
                 </div>
+
+                <div class="internal-wallet" style="margin-top: 30px;">
+                    <div>Your wallet sgbi....dbh6</div>
+                    <div>No NFTs yet...</div>
+                    <!-- <div class="internal-nft" data-nft-id="1">
+                        <a href="nft/1.html" target="_blank">
+                            <img src="nft/1-thumb.png">
+                        </a>
+                        <div class="title">N<sup>o</sup>1</div>
+                    </div> -->
+                </div>
+
             </div>
 
             <div style="margin-bottom: 45px; border: 1px solid #ccc; padding: 10px; width: 80%; text-align: center;">
@@ -350,6 +386,9 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
+                // Internal Wallet
+                const internalWallet = document.querySelector('.internal-wallet');
+
                 // Bubble creation
                 const bubble = new Bubble();
 
@@ -384,14 +423,18 @@
 
                     // Not connected
                     else if (!wallet.connected) {
+                        // Connect
                         connectButtonMsg.innerText = 'Connecting...';
                         wallet.connect({
                             traderCanisterId: TRADER_CANISTER,
+                            icrc37CanisterId: NFT_COLLECTION_CANISTER,
                             host: REPLICA_URL,
                             onConnected: (which) => {
                                 connectButtonMsg.innerText = 'Wallet Connected';
                                 document.querySelectorAll('.connect-wallet img').forEach(element => element.style.display = 'none');
                                 document.querySelector(`.connect-wallet img#${which}-logo`).style.display = 'block';
+                                internalWallet.style.display = 'flex';
+                                internalWallet.innerHTML = '<div>Fetching NFTs info...</div>';
                             },
                             onFail: (err) => {
                                 alert(err);

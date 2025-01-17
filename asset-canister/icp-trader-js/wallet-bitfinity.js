@@ -16,7 +16,7 @@ class WalletBitfinity extends Wallet {
      * Connect
      */
 
-    async connect({ traderCanisterId, host = null, onConnected, onFail } = {}) {
+    async connect({ traderCanisterId, icrc37CanisterId = null, host = null, onConnected, onFail } = {}) {
 
         if (this.installed) {
 
@@ -25,6 +25,7 @@ class WalletBitfinity extends Wallet {
                 whitelist: [this.ICP_LEDGER, traderCanisterId],
                 timeout: 50000
             };
+            if (icrc37CanisterId) connectArgs.whitelist.push(icrc37CanisterId);
             let key = null;
             try {
                 key = await window.ic.infinityWallet.requestConnect(connectArgs);
@@ -41,6 +42,11 @@ class WalletBitfinity extends Wallet {
 
                 // ICP ledger actor
                 this.actor.icpledger = await window.ic.infinityWallet.createActor({ interfaceFactory: idlFactoryICPLedger, canisterId: this.ICP_LEDGER, host });
+
+                // ICRC-37 ledger actor
+                if (icrc37CanisterId) {
+                    this.actor.icrc37ledger = await window.ic.infinityWallet.createActor({ interfaceFactory: idlFactoryICRC37Ledger, canisterId: icrc37CanisterId });
+                }
 
                 // Conected
                 this.connected = true;

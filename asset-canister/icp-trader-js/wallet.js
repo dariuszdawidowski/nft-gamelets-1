@@ -6,6 +6,9 @@ class Wallet {
 
     /**
      * Constructor
+     * @param args.onConnected: <function> - callback when connected
+     * @param args.installed: <boolean> - is wallet installed
+     * Actors filled by subclass
      */
 
     constructor(args = {}) {
@@ -19,6 +22,7 @@ class Wallet {
         // Actors
         this.actor = {
             icpledger: null,
+            icrc37ledger: null,
             swap: null,
         };
 
@@ -149,6 +153,14 @@ class Wallet {
         }
 
         return {status: 'OK'};
+    }
+
+    /**
+     * Fetch info about ICRC-7 NFTs
+     */
+
+    async infoNFTs({ owned = false }) {
+        //icrc7_tokens_of
     }
 
     /**

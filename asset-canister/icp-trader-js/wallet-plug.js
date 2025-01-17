@@ -16,7 +16,7 @@ class WalletPlug extends Wallet {
      * Connect
      */
 
-    async connect({ traderCanisterId, host = null, onConnected, onFail } = {}) {
+    async connect({ traderCanisterId, icrc37CanisterId = null, host = null, onConnected, onFail } = {}) {
 
         if (this.installed) {
 
@@ -26,6 +26,7 @@ class WalletPlug extends Wallet {
                 timeout: 50000
             };
             if (host) connectArgs.host = host;
+            if (icrc37CanisterId) connectArgs.whitelist.push(icrc37CanisterId);
             let key = null;
             try {
                 key = await window.ic.plug.requestConnect(connectArgs);
@@ -41,6 +42,11 @@ class WalletPlug extends Wallet {
 
                 // ICP ledger actor
                 this.actor.icpledger = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICPLedger, canisterId: this.ICP_LEDGER });
+
+                // ICRC-37 ledger actor
+                if (icrc37CanisterId) {
+                    this.actor.icrc37ledger = await window.ic.plug.createActor({ interfaceFactory: idlFactoryICRC37Ledger, canisterId: icrc37CanisterId });
+                }
 
                 // Conected
                 this.connected = true;
