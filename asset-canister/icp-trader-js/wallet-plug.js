@@ -1,5 +1,6 @@
 /**
  * Wallet Plug
+ * https://docs.plugwallet.ooo
  */
 
 class WalletPlug extends Wallet {
@@ -74,4 +75,27 @@ class WalletPlug extends Wallet {
         }
 
     }
+
+    /**
+     * Get Principal
+     */
+
+    async getPrincipal() {
+        if (this.connected) {
+            return await window.ic.plug.agent.getPrincipal();
+        }
+        return null;
+    }
+
+    /**
+     * Get Account ID
+     */
+
+    // async getAccountId() {
+    //     if (this.connected) {
+    //         return window.ic.plug.accountId;
+    //     }
+    //     return null;
+    // }
+
 }

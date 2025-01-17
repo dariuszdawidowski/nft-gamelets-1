@@ -1,5 +1,6 @@
 /**
  * Wallet Bitfinity
+ * https://infinityswap-docs-wallet.web.app/docs/wallet
  */
 
 class WalletBitfinity extends Wallet {
@@ -74,5 +75,27 @@ class WalletBitfinity extends Wallet {
         }
 
     }
+
+    /**
+     * Get Principal
+     */
+
+    async getPrincipal() {
+        if (this.connected) {
+            return await window.ic.infinityWallet.getPrincipal();
+        }
+        return null;
+    }
+
+    /**
+     * Get Account ID
+     */
+
+    // async getAccountId() {
+    //     if (this.connected) {
+    //         return 
+    //     }
+    //     return null;
+    // }
 
 }

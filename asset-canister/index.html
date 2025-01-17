@@ -430,11 +430,19 @@
                             icrc37CanisterId: NFT_COLLECTION_CANISTER,
                             host: REPLICA_URL,
                             onConnected: (which) => {
-                                connectButtonMsg.innerText = 'Wallet Connected';
                                 document.querySelectorAll('.connect-wallet img').forEach(element => element.style.display = 'none');
                                 document.querySelector(`.connect-wallet img#${which}-logo`).style.display = 'block';
                                 internalWallet.style.display = 'flex';
                                 internalWallet.innerHTML = '<div>Fetching NFTs info...</div>';
+                                wallet.infoNFTs({ owned: true, cycles: true }).then(info => {
+                                    connectButtonMsg.innerText = `${info.principalId.slice(0, 4)}....${info.principalId.slice(-3)} connected`
+                                    if (info.owned.length > 0) {
+
+                                    }
+                                    else {
+                                        internalWallet.innerHTML = `<div>...No NFTs...</div>`;
+                                    }
+                                });
                             },
                             onFail: (err) => {
                                 alert(err);

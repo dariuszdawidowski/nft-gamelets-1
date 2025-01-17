@@ -157,10 +157,24 @@ class Wallet {
 
     /**
      * Fetch info about ICRC-7 NFTs
+     * @param owned: [id, ...] - fetch list of owned NFTs
+     * @param cycles: Number - fetch cycles in the NFT collection canister
      */
 
-    async infoNFTs({ owned = false }) {
-        //icrc7_tokens_of
+    async infoNFTs({ owned = false, cycles = false }) {
+        let info = {};
+
+        // Principal ID
+        const principal = await this.getPrincipal();
+        info.principalId = principal.toString();
+
+        // Information about owned NFTs
+        if (owned) info.owned = await this.actor.icrc37ledger.icrc7_tokens_of({ owner: principal, subaccount: [] }, [], []);
+
+        // Information about cycles in the canister
+        if (cycles) info.cycles = await this.actor.icrc37ledger.get_cycles();
+
+        return info;
     }
 
     /**
