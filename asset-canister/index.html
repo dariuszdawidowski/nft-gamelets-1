@@ -63,10 +63,12 @@
                 background-color: rgba(255, 255, 255, 0.2);
                 border-radius: 25px;
                 transition: background-color 0.3s ease;
+                overflow-x: auto;
             }
 
             .internal-wallet .internal-nft {
                 text-align: center;
+                margin: 10px;
             }
 
             .internal-wallet .internal-nft img {
@@ -174,12 +176,6 @@
                 <div class="internal-wallet" style="margin-top: 30px;">
                     <div>Your wallet sgbi....dbh6</div>
                     <div>No NFTs yet...</div>
-                    <!-- <div class="internal-nft" data-nft-id="1">
-                        <a href="nft/1.html" target="_blank">
-                            <img src="nft/1-thumb.png">
-                        </a>
-                        <div class="title">N<sup>o</sup>1</div>
-                    </div> -->
                 </div>
 
             </div>
@@ -412,6 +408,32 @@
                     }
                 });
 
+                function fetchNFTInfo() {
+                    wallet.infoNFTs({ owned: true, cycles: true }).then(info => {
+                        let cycles = Number(info.cycles) / 1e12;
+                        if (cycles < 0.1) {
+                            console.log('< 0.1');
+                        } else {
+                            console.log(cycles.toFixed(1) + 'T');
+                        }
+                        connectButtonMsg.innerText = `${info.principalId.slice(0, 4)}....${info.principalId.slice(-3)} connected`
+                        if (info.owned.length > 0) {
+                            console.log(info.owned);
+                            internalWallet.innerHTML = info.owned.map(id => {
+                                return `<div class="internal-nft" data-nft-id="${id}">
+                                            <a href="nft/${id}.html" target="_blank">
+                                                <img src="nft/${id}-thumb.png">
+                                            </a>
+                                            <div class="title">N<sup>o</sup>${id}</div>
+                                        </div>`;
+                            }).join('');
+                        }
+                        else {
+                            internalWallet.innerHTML = `<div>- No NFTs from this collection in your wallet -</div>`;
+                        }
+                    });
+                }
+
                 // On Connect Wallet click
                 document.querySelector('.connect-wallet').addEventListener('click', () => {
 
@@ -434,15 +456,7 @@
                                 document.querySelector(`.connect-wallet img#${which}-logo`).style.display = 'block';
                                 internalWallet.style.display = 'flex';
                                 internalWallet.innerHTML = '<div>Fetching NFTs info...</div>';
-                                wallet.infoNFTs({ owned: true, cycles: true }).then(info => {
-                                    connectButtonMsg.innerText = `${info.principalId.slice(0, 4)}....${info.principalId.slice(-3)} connected`
-                                    if (info.owned.length > 0) {
-
-                                    }
-                                    else {
-                                        internalWallet.innerHTML = `<div>...No NFTs...</div>`;
-                                    }
-                                });
+                                fetchNFTInfo();
                             },
                             onFail: (err) => {
                                 alert(err);
@@ -467,39 +481,44 @@
                             }
                             else {
                                 const nftId = button.getAttribute('data-nft-id');
-                                console.log(`You are about to order NFT with ID: ${nftId}`);
-                                button.disabled = true;
-                                wallet.swap({
-                                    tokenId: `${NFT_COLLECTION_CANISTER}:${nftId}`,
-                                    tokenType: 'ICRC-7',
-                                    amount: 1,
-                                    onOrder: () => {
-                                        console.log('Step #1: Requesting order');
-                                        button.innerText = 'Ordering...';
-                                        bubble.counter('Ordering NFT ({{sec}}s)...', 4);
-                                    },
-                                    onTransfer: () => {
-                                        console.log('Step #2: Transfering ICP');
-                                        button.innerText = 'Paying...';
-                                        bubble.counter('Paying ICP ({{sec}}s)...', 5);
-                                    },
-                                    onClaim: () => {
-                                        console.log('Step #3: Claiming bought assets');
-                                        button.innerText = 'Claiming...';
-                                        bubble.counter('Claiming NFT ({{sec}}s)...', 3);
-                                    },
-                                    onFinish: () => {
-                                        console.log('Success');
-                                        button.innerText = 'SOLD';
-                                        bubble.hide();
-                                    },
-                                    onFail: () => {
-                                        console.log('Failed');
-                                        button.innerText = 'Error';
-                                        button.disabled = false;
-                                        bubble.hide();
-                                    },
-                                });
+                                if (confirm(`Do you want to buy NFT #${nftId}?`)) {
+                                    console.log(`You are about to order NFT with ID: ${nftId}`);
+                                    button.disabled = true;
+                                    wallet.swap({
+                                        tokenId: `${NFT_COLLECTION_CANISTER}:${nftId}`,
+                                        tokenType: 'ICRC-7',
+                                        amount: 1,
+                                        onOrder: () => {
+                                            console.log('Step #1: Requesting order');
+                                            button.innerText = 'Ordering...';
+                                            bubble.counter('Ordering NFT ({{sec}}s)...', 4);
+                                        },
+                                        onTransfer: () => {
+                                            console.log('Step #2: Transfering ICP');
+                                            button.innerText = 'Paying...';
+                                            bubble.counter('Paying ICP ({{sec}}s)...', 5);
+                                        },
+                                        onClaim: () => {
+                                            console.log('Step #3: Claiming bought assets');
+                                            button.innerText = 'Claiming...';
+                                            bubble.counter('Claiming NFT ({{sec}}s)...', 3);
+                                        },
+                                        onFinish: () => {
+                                            console.log('Success');
+                                            button.innerText = 'SOLD';
+                                            bubble.hide();
+                                            fetchNFTInfo();
+                                            bubble.counter('NFT purchased successfully!', 5);
+                                        },
+                                        onFail: () => {
+                                            console.log('Failed');
+                                            button.innerText = 'Error';
+                                            button.disabled = false;
+                                            bubble.hide();
+                                            alert('Error during purchase. Please contact support at X or Discord.');
+                                        },
+                                    });
+                                }
                             }
                         });
                     }
