@@ -140,6 +140,88 @@
                 background-color: #555;
             }
 
+            #nft-popup {
+                /* display: none; */
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 700px;
+                height: 400px;
+                background-color: #0e5c52cc;
+                z-index: 1000;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            }
+
+            #nft-popup .toolbar {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: #0c332ecc;
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            #nft-popup .toolbar .x {
+                cursor: pointer;
+            }
+
+            #nft-popup .content {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                margin-top: -20px;
+            }
+
+            #nft-popup .content .image {
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #nft-popup .content .image img {
+                width: 300px;
+                height: 300px;
+            }
+
+            #nft-popup .content .info {
+                width: 50%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            #nft-popup .content .info .row {
+                display: flex;
+                justify-content: space-between;
+                width: calc(100% - 16px);
+                padding: 8px;
+            }
+
+            #nft-popup .content .info .row:nth-child(odd) {
+                background-color: #0c332ecc;
+            }
+
+            #nft-popup .content .info .row:nth-child(even) {
+                background-color: #0e5c52cc;
+            }
+
+            #nft-popup .content .info .row div {
+                padding: 10px;
+            }
+
+
+
         </style>
         <script src="bubble.js"></script>
         <script src="icp-trader-js/autodetect.js"></script>
@@ -174,7 +256,6 @@
                 </div>
 
                 <div class="internal-wallet" style="margin-top: 30px;">
-                    <div>Your wallet sgbi....dbh6</div>
                     <div>No NFTs yet...</div>
                 </div>
 
@@ -379,6 +460,21 @@
             </div>
             <a href="https://internetcomputer.org/" target="_blank"><img src="ic-badge-powered-by-crypto_label-stripe-white-text.png"></a>
         </div>
+        <div id="nft-popup">
+            <div class="toolbar"><span class="name">Pixelpunk Gamelet No1/21</span><span class="x">X</span></div>
+            <div class="content">
+                <div class="image">
+                    <a href="nft/1.html" target="_blank"><img src="nft/1-thumb.png"></a>
+                </div>
+                <div class="info">
+                    <div class="row"><div>CONTRACT</div><div>57cts-....-cai</div></div>
+                    <div class="row"><div>NFT ID</div><div>1</div></div>
+                    <div class="row"><div>CYCLES</div><div>3.2T</div></div>
+                    <div class="row"><div>OWNER</div><div>abc..def</div></div>
+                    <div class="row"><div>TRANSFER</div><div>________</div></div>
+                </div>    
+            </div>
+        </div>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
 
@@ -416,9 +512,8 @@
                         } else {
                             console.log(cycles.toFixed(1) + 'T');
                         }
-                        connectButtonMsg.innerText = `${info.principalId.slice(0, 4)}....${info.principalId.slice(-3)} connected`
+                        connectButtonMsg.innerText = `${info.principalId.slice(0, 3)}...${info.principalId.slice(-3)} connected`
                         if (info.owned.length > 0) {
-                            console.log(info.owned);
                             internalWallet.innerHTML = info.owned.map(id => {
                                 return `<div class="internal-nft" data-nft-id="${id}">
                                             <a href="nft/${id}.html" target="_blank">
