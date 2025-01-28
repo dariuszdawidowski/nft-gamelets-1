@@ -70,6 +70,7 @@
                 display: inline-block;
                 text-align: center;
                 margin: 10px;
+                cursor: pointer;
             }
 
             .internal-wallet .internal-nft img {
@@ -142,7 +143,7 @@
             }
 
             #nft-popup {
-                /* display: none; */
+                display: none;
                 position: fixed;
                 top: 50%;
                 left: 50%;
@@ -483,17 +484,22 @@
             </div>
         </div>
         <div id="nft-popup">
-            <div class="toolbar"><span class="name">Pixelpunk Gamelet No1/21</span><span class="x" onclick="document.querySelector('#nft-popup').style.display = 'none'">X</span></div>
+            <div class="toolbar">
+                <span class="name">Pixelpunk Gamelet N<sup>o</sup><span id="nft-id-toolbar"></span>/21</span>
+                <span class="x" onclick="document.querySelector('#nft-popup').style.display = 'none'">X</span>
+            </div>
             <div class="content">
                 <div class="image">
-                    <a href="nft/1.html" target="_blank"><img src="nft/1-thumb.png"></a>
+                    <a id="nft-id-a-href" href="nft/1.html" target="_blank">
+                        <img id="nft-id-thumb" src="nft/1-thumb.png">
+                    </a>
                 </div>
                 <div class="info">
                     <div class="row">
                         <div>CONTRACT</div>
                         <div class="right">
-                            <div id="collection-id">57cts-....-cai</div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <div id="collection-id" data-collection-id=""></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="copyToClipboard(document.querySelector('#collection-id').dataset.collectionId)">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
@@ -502,8 +508,8 @@
                     <div class="row">
                         <div>NFT ID</div>
                         <div class="right">
-                            <div id="nft-id">1</div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <div id="nft-id" data-nft-id=""></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" onclick="copyToClipboard(document.querySelector('#nft-id').dataset.nftId)">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
@@ -511,29 +517,52 @@
                     </div>
                     <div class="row">
                         <div>CYCLES</div>
-                        <div>3.2T</div>
+                        <div id="cycles-t"></div>
                     </div>
                 </div>    
             </div>
         </div>
         <script>
+
+            // Bubble creation
+            const bubble = new Bubble();
+
+            function showPopup(collectionId, nftId, cycles) {
+                document.querySelector('#nft-popup').style.display = 'block';
+                document.querySelector('#collection-id').innerText = collectionId.slice(0, 4) + '....' + collectionId.slice(-3);
+                document.querySelector('#collection-id').dataset.collectionId = collectionId;
+                document.querySelector('#nft-id-toolbar').innerText = nftId;
+                document.querySelector('#nft-id-a-href').href = `nft/${nftId}.html`;
+                document.querySelector('#nft-id-thumb').src = `nft/${nftId}-thumb.png`;
+                document.querySelector('#nft-id').innerText = nftId;
+                document.querySelector('#nft-id').dataset.nftId = nftId;
+                document.querySelector('#cycles-t').innerText = cycles;
+            }
+
+            function copyToClipboard(text) {
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                bubble.counter('Copied to clipboard!', 1);
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
 
                 // Internal Wallet
                 const internalWallet = document.querySelector('.internal-wallet');
 
-                // Bubble creation
-                const bubble = new Bubble();
-
                 // Settings (mainnet with Ratex)
-                // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
-                // const REPLICA_URL = null;
-                // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
+                const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
+                const REPLICA_URL = null;
+                const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
 
                 // Settings (localhost Mac)
-                const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
-                const REPLICA_URL = 'http://127.0.0.1:8080';
-                const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
+                // const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
+                // const REPLICA_URL = 'http://127.0.0.1:8080';
+                // const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
                 // Connect button message
                 const connectButtonMsg = document.querySelector('.connect-wallet span');
@@ -547,19 +576,15 @@
 
                 function fetchNFTInfo() {
                     wallet.infoNFTs({ owned: true, cycles: true }).then(info => {
-                        let cycles = Number(info.cycles) / 1e12;
-                        if (cycles < 0.1) {
-                            console.log('< 0.1');
-                        } else {
-                            console.log(cycles.toFixed(1) + 'T');
-                        }
+                        const cycles = Number(info.cycles) / 1e12;
+                        const cyclesStr = cycles <= 0.1 ? '0.1' : cycles.toFixed(1) + 'T';
                         connectButtonMsg.innerText = `${info.principalId.slice(0, 3)}...${info.principalId.slice(-3)} connected`
                         if (info.owned.length > 0) {
                             internalWallet.innerHTML = info.owned.map(id => {
                                 return `<div class="internal-nft" data-nft-id="${id}">
-                                            <a href="nft/${id}.html" target="_blank">
+                                            <div onclick="showPopup('${NFT_COLLECTION_CANISTER}', '${id}', '${cyclesStr}')">
                                                 <img src="nft/${id}-thumb.png">
-                                            </a>
+                                            </div>
                                             <div class="title">N<sup>o</sup>${id}</div>
                                         </div>`;
                             }).join('');
