@@ -250,6 +250,14 @@
         <script src="icp-trader-js/wallet.js"></script>
         <script src="icp-trader-js/wallet-bitfinity.js"></script>
         <script src="icp-trader-js/wallet-plug.js"></script>
+        <script type="module">
+            import { HttpAgent, Actor } from "https://cdn.jsdelivr.net/npm/@dfinity/agent@2.2.0/+esm";
+            if (!('ic' in window)) window.ic = {};
+            if (!('agent' in window.ic)) window.ic.agent = {};
+            window.ic.agent.HttpAgent = HttpAgent;
+            window.ic.agent.Actor = Actor;
+        </script>
+          
     </head>
 
     <body>
@@ -524,6 +532,16 @@
         </div>
         <script>
 
+            // Settings (mainnet with Ratex)
+            // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
+            // const REPLICA_URL = null;
+            // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
+
+            // Settings (localhost Mac)
+            const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
+            const REPLICA_URL = 'http://127.0.0.1:8080';
+            const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
+
             // Bubble creation
             const bubble = new Bubble();
 
@@ -549,20 +567,31 @@
                 bubble.counter('Copied to clipboard!', 1);
             }
 
-            document.addEventListener('DOMContentLoaded', function() {
+            // ICP anonymous connection to ICRC-37 minter canister and fetch NFT info
+            async function anonymousConnectICP() {
+
+                // Anonymous agent
+                const agent = await window.ic.agent.HttpAgent.create({ host: REPLICA_URL });
+                console.log('agent:', agent);
+
+                // Fetch Root Key (localhost)
+                if (REPLICA_URL.startsWith('http://127.')) await agent.fetchRootKey();
+
+                // Actor for the ICRC-37 minter canister
+                const icrc37Actor = window.ic.agent.Actor.createActor(idlFactoryICRC37Ledger, { agent: agent, canisterId: NFT_COLLECTION_CANISTER });
+                console.log('icrc37Actor:', icrc37Actor);
+
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+
+                // Fetch NFT info and update NFTs
+                anonymousConnectICP().then((ntfInfo) => {
+                    console.log('NFT info fetched');
+                });
 
                 // Internal Wallet
                 const internalWallet = document.querySelector('.internal-wallet');
-
-                // Settings (mainnet with Ratex)
-                const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
-                const REPLICA_URL = null;
-                const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
-
-                // Settings (localhost Mac)
-                // const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
-                // const REPLICA_URL = 'http://127.0.0.1:8080';
-                // const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
                 // Connect button message
                 const connectButtonMsg = document.querySelector('.connect-wallet span');
