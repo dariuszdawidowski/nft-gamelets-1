@@ -241,6 +241,19 @@
                 padding: 0;
             }
 
+            #cookie-banner {
+                width: 100%;
+                background-color: #2f3a2a;
+                color: #fff;
+                text-align: center;
+                padding: 10px 0;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: 1000;
+                line-height: 1.2em;                
+            }
+
         </style>
         <script src="bubble.js"></script>
         <script src="icp-trader-js/autodetect.js"></script>
@@ -263,11 +276,8 @@
     </head>
 
     <body>
-        <div style="display: flex; align-items: center; justify-content: flex-start; flex-direction: column; width: 100%; height: 100%;">
+        <div style="display: flex; align-items: center; justify-content: flex-start; flex-direction: column; width: 100%; min-height: 100%;">
             <img src="Pixelpunk-logo.png" style="width: 80%; margin-top: 25px;">
-            <div style="width: 600px; text-align: center; margin-bottom: 20px;">
-                This site uses COOKIES to ensure proper functionality. By continuing to browse the site, you agree to our use of cookies. We do not analyze your browsing activity.
-            </div>
             <div style="font-size: 20px; letter-spacing: 2px; margin-bottom: 10px;">PIXELPUNK GAMELETS #1</div>
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">NFT COLLECTION</div>
             <div style="font-size: 16px; letter-spacing: 2px; margin-bottom: 10px;">(limited edition of 21 unique handmade items)</div>
@@ -487,12 +497,24 @@
                     <a href="https://www.patreon.com/PixelpunkZone" target="_blank">Patreon</a>
                 </div>
             </div>
-            <div style="margin-bottom: 20px; text-align: center;">
+            <div style="text-align: center;">
                 <a href="https://internetcomputer.org/" target="_blank">
-                    <img src="ic-badge-powered-by-crypto_label-stripe-white-text.png">
+                    <img src="ic-badge-powered-by-crypto_label-stripe-white-text.png" style="margin-bottom: 40px;">
                 </a>
             </div>
         </div>
+
+        <div id="cookie-banner">
+            This site uses 🍪 COOKIES to ensure proper functionality. By continuing to browse the site, you agree to our use of cookies.<br>
+            We do not analyze your browsing activity.
+            <button id="cookie-accept" style="margin-left: 10px; padding: 5px 10px; background-color: #555; color: #fff; border: none; cursor: pointer;">Accept</button>
+            <script>
+                document.getElementById('cookie-accept').addEventListener('click', function() {
+                    document.getElementById('cookie-banner').style.display = 'none';
+                });
+            </script>
+        </div>
+
         <div id="nft-popup">
             <div class="toolbar">
                 <span class="name">Pixelpunk Gamelet N<sup>o</sup><span id="nft-id-toolbar"></span>/21</span>
@@ -582,7 +604,6 @@
 
                 // Actor for the ICRC-37 minter canister
                 const icrc37Actor = window.ic.Actor.createActor(idlFactoryICRC37Ledger, { agent: agent, canisterId: NFT_COLLECTION_CANISTER });
-                console.log('icrc37Actor:', icrc37Actor);
 
                 return icrc37Actor;
             }
