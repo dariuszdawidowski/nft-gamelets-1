@@ -252,10 +252,12 @@
         <script src="icp-trader-js/wallet-plug.js"></script>
         <script type="module">
             import { HttpAgent, Actor } from "https://cdn.jsdelivr.net/npm/@dfinity/agent@2.2.0/+esm";
+            import { Principal } from "https://cdn.jsdelivr.net/npm/@dfinity/principal@2.2.0/+esm";
             if (!('ic' in window)) window.ic = {};
             if (!('agent' in window.ic)) window.ic.agent = {};
-            window.ic.agent.HttpAgent = HttpAgent;
-            window.ic.agent.Actor = Actor;
+            window.ic.HttpAgent = HttpAgent;
+            window.ic.Actor = Actor;
+            window.ic.Principal = Principal;
         </script>
           
     </head>
@@ -571,23 +573,34 @@
             async function anonymousConnectICP() {
 
                 // Anonymous agent
-                const agent = await window.ic.agent.HttpAgent.create({ host: REPLICA_URL });
+                const agent = await window.ic.HttpAgent.create({ host: REPLICA_URL });
                 console.log('agent:', agent);
 
                 // Fetch Root Key (localhost)
-                if (REPLICA_URL.startsWith('http://127.')) await agent.fetchRootKey();
+                if (REPLICA_URL.startsWith('http://127.0.0.1')) await agent.fetchRootKey();
 
                 // Actor for the ICRC-37 minter canister
-                const icrc37Actor = window.ic.agent.Actor.createActor(idlFactoryICRC37Ledger, { agent: agent, canisterId: NFT_COLLECTION_CANISTER });
+                const icrc37Actor = window.ic.Actor.createActor(idlFactoryICRC37Ledger, { agent: agent, canisterId: NFT_COLLECTION_CANISTER });
                 console.log('icrc37Actor:', icrc37Actor);
 
+                return icrc37Actor;
             }
 
             document.addEventListener('DOMContentLoaded', () => {
 
                 // Fetch NFT info and update NFTs
-                anonymousConnectICP().then((ntfInfo) => {
-                    console.log('NFT info fetched');
+                anonymousConnectICP().then((actor) => {
+                    const nfts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+                    actor.icrc7_owner_of(nfts).then((result) => {
+                        const ownership = {};;
+                        result.forEach((address, index) => {
+                            if (address.length > 0 && 'owner' in address[0]) {
+                                const principal = window.ic.Principal.fromUint8Array(address[0].owner._arr);
+                                ownership[nfts[index]] = principal.toText();
+                            }
+                        });
+                        console.log('ownership:', ownership);
+                    });
                 });
 
                 // Internal Wallet
