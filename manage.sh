@@ -109,7 +109,7 @@ if [ $1 == "batch" ]; then
             echo "Minting NFT $i"
             ./manage.sh mint $i http://bw4dl-smaaa-aaaaa-qaacq-cai.localhost:8080/nft/$i.html http://bw4dl-smaaa-aaaaa-qaacq-cai.localhost:8080/nft/$i-thumb.png
             echo "Transferring NFT $i to trader"
-            ./manage.sh transfer $i be2us-64aaa-aaaaa-qaabq-cai
+            ./manage.sh transfer $i avqkn-guaaa-aaaaa-qaaea-cai
         done
     fi
 

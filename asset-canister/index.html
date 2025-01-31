@@ -250,7 +250,7 @@
                 position: fixed;
                 bottom: 0;
                 left: 0;
-                z-index: 1000;
+                z-index: 100;
                 line-height: 1.2em;                
             }
 
@@ -562,13 +562,13 @@
             // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
 
             // Settings (localhost Mac)
-            const TRADER_CANISTER = 'be2us-64aaa-aaaaa-qaabq-cai';
+            const TRADER_CANISTER = 'avqkn-guaaa-aaaaa-qaaea-cai';
             const REPLICA_URL = 'http://127.0.0.1:8080';
             const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
             // Bubble creation
             const bubble = new Bubble();
-
+            
             function showPopup(collectionId, nftId, cycles) {
                 document.querySelector('#nft-popup').style.display = 'block';
                 document.querySelector('#collection-id').innerText = collectionId.slice(0, 4) + '....' + collectionId.slice(-3);
@@ -588,7 +588,7 @@
                 el.select();
                 document.execCommand('copy');
                 document.body.removeChild(el);
-                bubble.counter('Copied to clipboard!', 1);
+                bubble.counter('Copied to clipboard!', 1, true);
             }
 
             // ICP anonymous connection to ICRC-37 minter canister and fetch NFT info
@@ -730,24 +730,24 @@
                                         onOrder: () => {
                                             console.log('Step #1: Requesting order');
                                             button.innerText = 'Ordering...';
-                                            bubble.counter('Ordering NFT ({{sec}}s)...', 4);
+                                            bubble.counter('Ordering NFT ({{sec}}s)...', 4, false);
                                         },
                                         onTransfer: () => {
                                             console.log('Step #2: Transfering ICP');
                                             button.innerText = 'Paying...';
-                                            bubble.counter('Paying ICP ({{sec}}s)...', 5);
+                                            bubble.counter('Paying ICP ({{sec}}s)...', 5, false);
                                         },
                                         onClaim: () => {
                                             console.log('Step #3: Claiming bought assets');
                                             button.innerText = 'Claiming...';
-                                            bubble.counter('Claiming NFT ({{sec}}s)...', 3);
+                                            bubble.counter('Claiming NFT ({{sec}}s)...', 3, false);
                                         },
                                         onFinish: () => {
                                             console.log('Success');
                                             button.innerText = 'SOLD!';
                                             bubble.hide();
                                             fetchNFTInfo();
-                                            bubble.counter('NFT purchased successfully!', 5);
+                                            bubble.counter('NFT purchased successfully!', 5, true);
                                         },
                                         onFail: () => {
                                             console.log('Failed');
