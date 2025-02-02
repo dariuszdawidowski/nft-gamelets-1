@@ -1,5 +1,5 @@
 ICP TRADER JavaScript interface
-v0.6.2
+v0.6.3
 
 Include scripts:
 ```html

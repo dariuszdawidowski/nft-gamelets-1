@@ -67,7 +67,7 @@ class Wallet {
             });
             console.log('order', order);
 
-           if ('ok' in order) {
+            if ('ok' in order) {
 
                 // 2. Send ICP to swap account
                 if (onTransfer) onTransfer();
@@ -147,6 +147,7 @@ class Wallet {
                 else if ('PoolNotExist' in order.err) error = 'Pool does not exist';
                 else if ('TokenNotListed' in order.err) error = 'Token not listed';
                 else if ('PoolNotEnoughTokens' in order.err) error = 'Not enough tokens in our pool';
+                else if ('Reserved' in order.err) error = 'Token reserved. Someone is buying it. If it was your failed operation - wait a while and try again.';
                 alert(error);
             }
 

@@ -716,7 +716,7 @@
                         button.addEventListener('click', (event) => {
                             event.preventDefault();
                             if (!wallet || !wallet.connected) {
-                                alert('Please connect your wallet first.');
+                                alert('Please connect your wallet first (big button at the top of the page).');
                             }
                             else {
                                 const nftId = button.getAttribute('data-nft-id');
@@ -754,7 +754,7 @@
                                             button.innerText = 'Error';
                                             button.disabled = false;
                                             bubble.hide();
-                                            alert('Error during purchase. Please contact support at X or Discord.');
+                                            alert('NFT purchase interrupted.');
                                         },
                                     });
                                 }

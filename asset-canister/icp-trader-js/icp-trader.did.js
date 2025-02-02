@@ -1,3 +1,5 @@
+// Candid for ICPTrader v0.7.2
+
 const idlFactoryICPTrader = ({ IDL }) => {
   const ClaimArgs = IDL.Record({
     'tokenTo' : IDL.Text,
@@ -29,6 +31,7 @@ const idlFactoryICPTrader = ({ IDL }) => {
   });
   const OrderError = IDL.Variant({
     'TokenNotListed' : IDL.Null,
+    'Reserved' : IDL.Null,
     'PoolNotEnoughTokens' : IDL.Null,
     'General' : IDL.Null,
     'PoolNotExist' : IDL.Null,
@@ -41,3 +44,4 @@ const idlFactoryICPTrader = ({ IDL }) => {
     'order' : IDL.Func([OrderArgs], [OrderResult], []),
   });
 };
+
