@@ -38,6 +38,7 @@ const idlFactoryICPTrader = ({ IDL }) => {
   });
   const OrderResult = IDL.Variant({ 'ok' : OrderOk, 'err' : OrderError });
   return IDL.Service({
+    'admin_history' : IDL.Func([], [IDL.Vec(IDL.Text)], []),
     'admin_payoff' : IDL.Func([], [IDL.Nat], []),
     'claim' : IDL.Func([ClaimArgs], [ClaimResult], []),
     'get_cycles' : IDL.Func([], [IDL.Nat], ['query']),
