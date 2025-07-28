@@ -264,8 +264,8 @@
         <script src="icp-trader-js/wallet-bitfinity.js"></script>
         <script src="icp-trader-js/wallet-plug.js"></script>
         <script type="module">
-            import { HttpAgent, Actor } from "https://cdn.jsdelivr.net/npm/@dfinity/agent@2.2.0/+esm";
-            import { Principal } from "https://cdn.jsdelivr.net/npm/@dfinity/principal@2.2.0/+esm";
+            import { HttpAgent, Actor } from "https://cdn.jsdelivr.net/npm/@dfinity/agent@3.1.0/+esm";
+            import { Principal } from "https://cdn.jsdelivr.net/npm/@dfinity/principal@3.1.0/+esm";
             if (!('ic' in window)) window.ic = {};
             if (!('agent' in window.ic)) window.ic.agent = {};
             window.ic.HttpAgent = HttpAgent;
@@ -557,14 +557,14 @@
         <script>
 
             // Settings (mainnet with Ratex)
-            // const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
-            // const REPLICA_URL = 'https://icp-api.io';
-            // const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
+            const TRADER_CANISTER = '2f7hj-diaaa-aaaah-qpxia-cai';
+            const REPLICA_URL = 'https://icp-api.io';
+            const NFT_COLLECTION_CANISTER = '57cts-lyaaa-aaaap-ahxma-cai';
 
             // Settings (localhost Mac)
-            const TRADER_CANISTER = 'avqkn-guaaa-aaaaa-qaaea-cai';
-            const REPLICA_URL = 'http://127.0.0.1:8080';
-            const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
+            // const TRADER_CANISTER = 'avqkn-guaaa-aaaaa-qaaea-cai';
+            // const REPLICA_URL = 'http://127.0.0.1:8080';
+            // const NFT_COLLECTION_CANISTER = 'by6od-j4aaa-aaaaa-qaadq-cai';
 
             // Bubble creation
             const bubble = new Bubble();
